@@ -13,7 +13,9 @@ w_data_2 = data(:, 6) * (pi/180);
 w_data_3 = data(:, 7) * (pi/180);
 
 % a_data is data from acceleometer and w_data is from gyroscope
+
 % from the data show in the plot, we can see a_data_3 is z.
+
 % First figure: Plot columns 2, 3, 4 vs column 1
 figure;
 
@@ -99,3 +101,8 @@ title('Filtered Angular Velocity Data vs Time');
 xlabel('Time (s)');
 ylabel('Angular Velocity Data (rad/s)');
 legend;
+
+%% Task 4
+
+
+%% Task 5
