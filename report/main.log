@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.25)  25 NOV 2024 23:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.25)  25 NOV 2024 23:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -496,7 +496,7 @@ Package epstopdf Info: Source file: <Imagens/IST_A.eps>
 (epstopdf)                    date: 2024-11-25 12:24:51
 (epstopdf)                    size: 651034 bytes
 (epstopdf)             Output file: <Imagens/IST_A-eps-converted-to.pdf>
-(epstopdf)                    date: 2024-11-25 23:12:28
+(epstopdf)                    date: 2024-11-25 23:25:34
 (epstopdf)                    size: 15561 bytes
 (epstopdf)             Command: <repstopdf --outfile=Imagens/IST_A-eps-converted-to.pdf Imagens/IST_A.eps>
 (epstopdf)             \includegraphics on input line 72.

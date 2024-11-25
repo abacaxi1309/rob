@@ -1,19 +1,19 @@
 # Fdb version 4
-["bibtex main"] 1732576969.38927 "main.aux" "main.bbl" "main" 1732576972.18025 0
+["bibtex main"] 1732577138.53699 "main.aux" "main.bbl" "main" 1732577141.17707 0
   "./refs.bib" 1732537491 610 f8dc18128e2f62e704d598dcbdfc0bf4 ""
   "c:/texlive/2024/texmf-dist/bibtex/bst/base/plain.bst" 1732538386 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "main.aux" 1732576971 4167 0ee76f9131771161d75012e02098fb87 "pdflatex"
+  "main.aux" 1732577140 4167 0ee76f9131771161d75012e02098fb87 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1732576969.88453 "c:/Users/pepes/Desktop/IST/Robotica/rob/report/main.tex" "main.pdf" "main" 1732576972.18077 0
+["pdflatex"] 1732577139.00685 "c:/Users/pepes/Desktop/IST/Robotica/rob/report/main.tex" "main.pdf" "main" 1732577141.17759 0
   "Imagens/IST_A.eps" 1732537491 651034 129e236270a3943f73c113714cb9d3af ""
   "Imagens/accelerationvstime.png" 1732572629 54061 8cee0f49692c55abaaafd58a1a292081 ""
   "Imagens/angularvstime.png" 1732572609 55784 418230bd89b6bc0f8882c3db7f8897f1 ""
   "Imagens/filteredaccelerationvsoriginal.png" 1732573417 65857 fe08ca928e061bed74e4ad3a78531c5f ""
   "Imagens/filteredangularvsoriginal.png" 1732573435 69261 d90ceb8edcf917ddfc5bb16573577ebe ""
-  "c:/Users/pepes/Desktop/IST/Robotica/rob/report/main.tex" 1732576965 18127 e4b3a7e5c664f2987a1b8790dc1d7902 ""
+  "c:/Users/pepes/Desktop/IST/Robotica/rob/report/main.tex" 1732577134 18127 e4b3a7e5c664f2987a1b8790dc1d7902 ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1732538558 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "c:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1732539038 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1732538831 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -159,11 +159,11 @@
   "c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1732541631 5521760 8d14e9f23704d5fbe9a015e30cb48126 ""
   "c:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1732541826 3342993 0d1794b8fe99635bd44c5ee2db84ed5a ""
   "c:/texlive/2024/texmf.cnf" 1732541611 713 e69b156964470283e0530f5060668171 ""
-  "main.aux" 1732576971 4167 0ee76f9131771161d75012e02098fb87 "pdflatex"
-  "main.bbl" 1732576969 49 0eba253fc001332e731e8aba3f23127b "bibtex main"
-  "main.out" 1732576971 1689 588314a5aa1559dfe95b6c0079848d6b "pdflatex"
-  "main.tex" 1732576965 18127 e4b3a7e5c664f2987a1b8790dc1d7902 ""
-  "main.toc" 1732576971 1275 72b8281403fb25644a9bc9ed68fc4da8 "pdflatex"
+  "main.aux" 1732577140 4167 0ee76f9131771161d75012e02098fb87 "pdflatex"
+  "main.bbl" 1732577138 49 0eba253fc001332e731e8aba3f23127b "bibtex main"
+  "main.out" 1732577140 1689 588314a5aa1559dfe95b6c0079848d6b "pdflatex"
+  "main.tex" 1732577134 18127 e4b3a7e5c664f2987a1b8790dc1d7902 ""
+  "main.toc" 1732577140 1275 72b8281403fb25644a9bc9ed68fc4da8 "pdflatex"
   (generated)
   "main.aux"
   "main.log"
