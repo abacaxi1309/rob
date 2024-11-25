@@ -102,7 +102,73 @@ xlabel('Time (s)');
 ylabel('Angular Velocity Data (rad/s)');
 legend;
 
-%% Task 4
-
-
 %% Task 5
+%Integration to obtain the orientation angles
+theta_x = cumtrapz(time, w_data_1_filtered); % Angle around the X-axis
+theta_y = cumtrapz(time, w_data_2_filtered); % Angle around the Y-axis
+theta_z = cumtrapz(time, w_data_3_filtered); % Angle around the Z-axis
+
+%Trajectory in the orientation space
+figure;
+plot3(theta_x, theta_y, theta_z, 'LineWidth', 2);
+grid on;
+xlabel('\theta_x (rad)');
+ylabel('\theta_y (rad)');
+zlabel('\theta_z (rad)');
+title('Trajectory in Orientation Space');
+legend('Orientation Trajectory');
+
+%% Task 6
+
+% Step 1: Integrate the acceleration to get velocity
+velocity_x = cumtrapz(time, a_data_1_filtered); % Velocity in the X direction
+velocity_y = cumtrapz(time, a_data_2_filtered); % Velocity in the Y direction
+velocity_z = cumtrapz(time, a_data_3_filtered); % Velocity in the Z direction
+
+% Step 2: Integrate the velocity to get position
+position_x = cumtrapz(time, velocity_x); % Position in the X direction
+position_y = cumtrapz(time, velocity_y); % Position in the Y direction
+position_z = cumtrapz(time, velocity_z); % Position in the Z direction
+
+% Step 3: Plot the 3D Cartesian trajectory
+figure;
+plot3(position_x, position_y, position_z, 'LineWidth', 2);
+grid on;
+xlabel('Position X (m)');
+ylabel('Position Y (m)');
+zlabel('Position Z (m)');
+title('Reconstructed 3D Trajectory in Cartesian Space');
+legend('Trajectory in 3D Space');
+axis tight;
+
+
+% Animate 3D position trajectory
+figure;
+subplot(1,2,1);
+h1 = plot3(position_x(1), position_y(1), position_z(1), 'o'); % Initialize the plot with the first point
+axis([min(position_x) max(position_x) min(position_y) max(position_y) min(position_z) max(position_z)]);
+xlabel('Position X (m)');
+ylabel('Position Y (m)');
+zlabel('Position Z (m)');
+title('Animated 3D Position Trajectory');
+grid on;
+
+for i = 2:length(position_x)
+    set(h1, 'XData', position_x(1:i), 'YData', position_y(1:i), 'ZData', position_z(1:i)); % Update the plot
+    pause(0.01); % Adjust the frame rate of the animation
+end
+
+% Animate orientation trajectory in 3D space
+subplot(1,2,2);
+h2 = plot3(theta_x(1), theta_y(1), theta_z(1), 'o'); % Initialize the plot with the first point
+axis([min(theta_x) max(theta_x) min(theta_y) max(theta_y) min(theta_z) max(theta_z)]);
+xlabel('\theta_x (rad)');
+ylabel('\theta_y (rad)');
+zlabel('\theta_z (rad)');
+title('Animated Orientation Trajectory');
+grid on;
+
+for i = 2:length(theta_x)
+    set(h2, 'XData', theta_x(1:i), 'YData', theta_y(1:i), 'ZData', theta_z(1:i)); % Update the plot
+    pause(0.01); % Adjust the frame rate of the animation
+end
