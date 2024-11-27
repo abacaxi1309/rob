@@ -226,17 +226,67 @@ In this case, a median filter was applied to clean the data effectively. This fi
 The results achieved with the median filter demonstrated significant improvements, yielding smooth and reliable datasets without distortions. This preprocessing ensures that the data is well-prepared for reconstructing accurate trajectories and performing further analysis with confidence in the validity of the underlying patterns.
 
 \begin{figure}[H]
-    \centerline{\includegraphics[scale=0.7]{Imagens/filteredangularvsoriginal.png}}
-    \caption{Filtered angular velocity vs original.}
+    \centerline{\includegraphics[scale=0.8]{Imagens/filteredangularvsoriginal.png}}
+    \caption{Filtered angular velocity vs original (using median filter).}
     \label{fig}
 \end{figure}
 
 
 \begin{figure}[H]
-    \centerline{\includegraphics[scale=0.7]{Imagens/filteredaccelerationvsoriginal.png}}
-    \caption{Filtered acceleration vs original}
+    \centerline{\includegraphics[scale=0.8]{Imagens/filteredaccelerationvsoriginal.png}}
+    \caption{Filtered acceleration vs original (using median filter)}
     \label{fig}
 \end{figure}
+
+
+\subsection*{Comparison of Filters}
+
+\paragraph{1. Sliding Window Average/Median Filters}
+\begin{itemize}
+    \item \textbf{Average Filter:} 
+    Calculates the average of data points within a sliding window, effectively reducing high-frequency noise. However, it is sensitive to outliers, as extreme values can significantly skew the average.
+    \item \textbf{Median Filter:} 
+    Replaces each point with the median of its neighbors within the sliding window. This makes it more robust than the average filter, as it can effectively handle outliers without distorting the signal.
+\end{itemize}
+
+\paragraph{2. Gaussian Filters}
+\begin{itemize}
+    \item Smooths data by applying a weighted average, where weights follow a Gaussian distribution. This reduces noise while preserving overall trends better than simple averaging.
+    \item It is less robust to outliers compared to the median filter, as the weights are still influenced by extreme values.
+    \item Requires the selection of a standard deviation parameter (\(\sigma\)), which controls the level of smoothing, making it less straightforward for general applications.
+\end{itemize}
+
+\paragraph{3. Savitzky–Golay Filters}
+\begin{itemize}
+    \item Fits a polynomial to a subset of data points within a sliding window, then replaces the center point with the value predicted by the polynomial.
+    \item Effective at preserving sharp transitions and trends while reducing noise, making it ideal for smooth but non-linear signals.
+    \item Sensitive to outliers, as the polynomial fit can be distorted by extreme values within the window.
+    \item Requires careful tuning of the polynomial order and window size for optimal results.
+\end{itemize}
+
+\paragraph{4. Smooth Filters}
+\begin{itemize}
+    \item General-purpose filters that reduce noise by averaging data points or applying weighted smoothing.
+    \item These filters can smooth data effectively but often blur sharp transitions, making them less suitable for dynamic systems like robotic arms.
+    \item They do not specifically address outliers, which can still influence the smoothed result.
+\end{itemize}
+
+\paragraph{5. Outliers Filters}
+\begin{itemize}
+    \item Specifically designed to detect and remove outliers based on statistical thresholds (e.g., Z-Score or Interquartile Range methods).
+    \item While effective at identifying and removing anomalies, these filters often leave gaps in the data by replacing outliers with \texttt{NaN}, requiring additional interpolation steps.
+    \item Do not inherently smooth the data or reduce noise in non-outlier regions.
+\end{itemize}
+
+\subsection*{Why Use the Median Filter?}
+The Median Filter stands out compared to these alternatives due to its:
+\begin{itemize}
+    \item \textbf{Robustness:} Unlike the Average, Gaussian, or Savitzky–Golay filters, the Median Filter is highly robust against outliers and extreme values, as it is unaffected by the magnitude of data points outside the sliding window.
+    \item \textbf{Preservation of Trends:} The Median Filter preserves sharp transitions and dynamic changes better than smooth or Gaussian filters, which tend to over-smooth the data.
+    \item \textbf{Simplicity:} Requires only a window size as a parameter, making it simpler to implement than Gaussian or Savitzky–Golay filters, which require tuning of additional parameters (e.g., \(\sigma\) or polynomial order).
+    \item \textbf{Completeness:} Unlike Outliers Filters, the Median Filter does not leave gaps in the data and simultaneously reduces noise and removes anomalies.
+\end{itemize}
+
 
 \subsection{Task 3}
 

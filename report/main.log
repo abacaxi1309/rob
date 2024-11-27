@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.25)  27 NOV 2024 17:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.25)  27 NOV 2024 18:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -551,29 +551,31 @@ Package pdftex.def Info: Imagens/acclerationvstime.png  used on input line 164.
 File: Imagens/filteredangularvsoriginal.png Graphic file (type png)
 <use Imagens/filteredangularvsoriginal.png>
 Package pdftex.def Info: Imagens/filteredangularvsoriginal.png  used on input line 229.
-(pdftex.def)             Requested size: 382.78749pt x 221.24104pt.
+(pdftex.def)             Requested size: 437.47499pt x 252.84898pt.
 <Imagens/filteredaccelerationvsoriginal.png, id=133, 493.3632pt x 316.0608pt>
 File: Imagens/filteredaccelerationvsoriginal.png Graphic file (type png)
 <use Imagens/filteredaccelerationvsoriginal.png>
 Package pdftex.def Info: Imagens/filteredaccelerationvsoriginal.png  used on input line 236.
-(pdftex.def)             Requested size: 345.35188pt x 221.24104pt.
+(pdftex.def)             Requested size: 394.6911pt x 252.84898pt.
 
 
 [6 <./Imagens/filteredangularvsoriginal.png (PNG copy)>]
 
 [7 <./Imagens/filteredaccelerationvsoriginal.png (PNG copy)>]
 
-[8] (./main.bbl
+[8]
+
+[9]
+
+[10] (./main.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
 )
 
-[9]
+[11]
 
-[10]
-
-[11
+[12
 
 ] (./main.aux)
  ***********
@@ -588,18 +590,18 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 588314A5AA1559DFE95B6C0079848D6B;1689.
  ) 
 Here is how much of TeX's memory you used:
- 18800 strings out of 473362
- 364993 string characters out of 5725050
- 824109 words of memory out of 5000000
+ 18801 strings out of 473362
+ 365000 string characters out of 5725050
+ 824143 words of memory out of 5000000
  41601 multiletter control sequences out of 15000+600000
  572821 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  86i,13n,117p,553b,984s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb>
-Output written on main.pdf (12 pages, 427333 bytes).
+Output written on main.pdf (13 pages, 433315 bytes).
 PDF statistics:
- 266 PDF objects out of 1000 (max. 8388607)
- 211 compressed objects within 3 object streams
- 46 named destinations out of 1000 (max. 500000)
+ 271 PDF objects out of 1000 (max. 8388607)
+ 215 compressed objects within 3 object streams
+ 47 named destinations out of 1000 (max. 500000)
  156 words of extra memory for PDF output out of 10000 (max. 10000000)
 
