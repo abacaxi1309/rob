@@ -33,10 +33,10 @@ legend;
 % Second figure: Plot columns 5, 6, 7 vs column 1
 figure;
 
-plot(time, w_data_1,'r','LineWidth', 2, 'DisplayName', 'Angular velocity X');
+plot(time, w_data_1,'g','LineWidth', 2, 'DisplayName', 'Angular velocity Y');
 hold on;
-plot(time, w_data_2,'g','LineWidth', 2, 'DisplayName', 'Angular velocity Y');
-plot(time, w_data_3,'b','LineWidth', 2, 'DisplayName', 'Angular velocity Z');
+plot(time, w_data_2,'b','LineWidth', 2, 'DisplayName', 'Angular velocity Z');
+plot(time, w_data_3,'r','LineWidth', 2, 'DisplayName', 'Angular velocity X');
 hold off;
 
 title('Angular Velocity Data vs Time');
@@ -81,10 +81,10 @@ legend;
 % Plot original vs filtered angular velocity data
 figure;
 subplot(2,1,1);
-plot(time, w_data_1, 'r', 'LineWidth', 2, 'DisplayName', 'Angular velocity X');
+plot(time, w_data_1, 'g', 'LineWidth', 2, 'DisplayName', 'Angular velocity Y');
 hold on;
-plot(time, w_data_2, 'g', 'LineWidth', 2, 'DisplayName', 'Angular velocity Y');
-plot(time, w_data_3, 'b', 'LineWidth', 2, 'DisplayName', 'Angular velocity Z');
+plot(time, w_data_2, 'b', 'LineWidth', 2, 'DisplayName', 'Angular velocity Z');
+plot(time, w_data_3, 'r', 'LineWidth', 2, 'DisplayName', 'Angular velocity X');
 hold off;
 title('Original Angular Velocity Data vs Time');
 xlabel('Time (s)');
@@ -92,10 +92,10 @@ ylabel('Angular Velocity Data (rad/s)');
 legend;
 
 subplot(2,1,2);
-plot(time, w_data_1_filtered, 'r', 'LineWidth', 2, 'DisplayName', 'Angular velocity X');
+plot(time, w_data_1_filtered, 'g', 'LineWidth', 2, 'DisplayName', 'Angular velocity Y');
 hold on;
-plot(time, w_data_2_filtered, 'g', 'LineWidth', 2, 'DisplayName', 'Angular velocity Y');
-plot(time, w_data_3_filtered, 'b', 'LineWidth', 2, 'DisplayName', 'Angular velocity Z');
+plot(time, w_data_2_filtered, 'b', 'LineWidth', 2, 'DisplayName', 'Angular velocity Z');
+plot(time, w_data_3_filtered, 'r', 'LineWidth', 2, 'DisplayName', 'Angular velocity X');
 hold off;
 title('Filtered Angular Velocity Data vs Time');
 xlabel('Time (s)');
