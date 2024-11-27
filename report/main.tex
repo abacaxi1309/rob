@@ -316,7 +316,7 @@ From this matrix, we derive the equations for the time derivatives of the Euler 
 \end{equation}
 
 \paragraph{Limitation of the ZYX Convention}
-The ZYX Euler angle convention, while intuitive and practical for certain robotic systems, has a significant limitation: it becomes singular when \(\beta = \pm 90^\circ\), a phenomenon known as the \textit{gimbal lock}. At these angles, the pitch rotation aligns the global and local axes, effectively reducing the degrees of freedom in orientation from three to two. Mathematically, this occurs because \(\tan(\beta)\) and \(1/\cos(\beta)\) become undefined when \(\cos(\beta) = 0\), making the Jacobian matrix \(\mathbf{J}(\alpha, \beta)\) non-invertible.
+The ZYX Euler angle convention, while intuitive and practical, has a significant limitation: it becomes singular when \(\beta = \pm 90^\circ\), a phenomenon known as the \textit{gimbal lock}. At these angles, the pitch rotation aligns the global and local axes, effectively reducing the degrees of freedom in orientation from three to two. Mathematically, this occurs because \(\tan(\beta)\) and \(1/\cos(\beta)\) become undefined when \(\cos(\beta) = 0\), making the Jacobian matrix \(\mathbf{J}(\alpha, \beta)\) non-invertible.
 
 In the context of the Scorbot VII, this limitation implies that certain orientations where the manipulator points directly up or down (near \(\beta = \pm 90^\circ\)) can lead to ambiguous or unstable control of the end effector. While the Scorbot VII primarily uses revolute joints, its trajectory planning and orientation representation may still encounter challenges near these singular configurations.
 
