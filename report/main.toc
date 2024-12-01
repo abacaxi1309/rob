@@ -12,12 +12,12 @@
 \contentsline {subsection}{\numberline {3.3}Task 3}{9}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Task 4}{9}{subsection.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Theory and Mathematical Formulation}{9}{subsubsection.3.4.1}%
-\contentsline {paragraph}{Parameterization}{9}{subsubsection.3.4.1}%
-\contentsline {paragraph}{Example Calculation}{10}{equation.5}%
-\contentsline {subsubsection}{\numberline {3.4.2}Numerical Integration}{11}{subsubsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.5}Task 5}{11}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}Task 6}{11}{subsection.3.6}%
-\contentsline {subsection}{\numberline {3.7}Task 7}{11}{subsection.3.7}%
-\contentsline {subsection}{\numberline {3.8}Task 8}{11}{subsection.3.8}%
-\contentsline {section}{\numberline {4}Conclusion}{11}{section.4}%
-\contentsline {section}{Appendices}{12}{section*.6}%
+\contentsline {subsubsection}{\numberline {3.4.2}Parameterization}{9}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Derivation of the Transformation Matrix}{9}{subsubsection.3.4.3}%
+\contentsline {subsubsection}{\numberline {3.4.4}Final Equations}{11}{subsubsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.5}Task 5}{12}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Task 6}{12}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Task 7}{12}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}Task 8}{12}{subsection.3.8}%
+\contentsline {section}{\numberline {4}Conclusion}{12}{section.4}%
+\contentsline {section}{Appendices}{13}{section*.6}%
