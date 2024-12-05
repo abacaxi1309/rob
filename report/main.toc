@@ -11,10 +11,11 @@
 \contentsline {paragraph}{5. Outliers Filters}{8}{figure.caption.5}%
 \contentsline {subsection}{\numberline {3.3}Task 3}{9}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Task 4}{9}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}Theory and Mathematical Formulation}{9}{subsubsection.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}Parameterization}{9}{subsubsection.3.4.2}%
-\contentsline {subsubsection}{\numberline {3.4.3}Derivation of the Transformation Matrix}{9}{subsubsection.3.4.3}%
-\contentsline {subsubsection}{\numberline {3.4.4}Final Equations}{11}{subsubsection.3.4.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Justification for ZYX Euler Angle Convention}{9}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Theory and Mathematical Formulation}{9}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Parameterization}{10}{subsubsection.3.4.3}%
+\contentsline {subsubsection}{\numberline {3.4.4}Derivation of the Transformation Matrix}{10}{subsubsection.3.4.4}%
+\contentsline {subsubsection}{\numberline {3.4.5}Final Equations}{12}{subsubsection.3.4.5}%
 \contentsline {subsection}{\numberline {3.5}Task 5}{12}{subsection.3.5}%
 \contentsline {subsection}{\numberline {3.6}Task 6}{12}{subsection.3.6}%
 \contentsline {subsection}{\numberline {3.7}Task 7}{12}{subsection.3.7}%

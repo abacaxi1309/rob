@@ -293,27 +293,39 @@ The Median Filter stands out compared to these alternatives due to its:
 
 \subsection{Task 4}
 
-To reconstruct the sensor orientation in Euler angles \((\alpha, \beta, \gamma)\) using rate-gyro data, we analyzed the relationship between angular velocities \((\omega_x, \omega_y, \omega_z)\) and the derivatives of the Euler angles. The \textbf{ZYX Euler angle convention} was selected because it provides an intuitive sequence for controlling robotic manipulators, such as the Scorbot VII, allowing separate adjustments for direction, height, and tool orientation.
+To reconstruct the sensor orientation in Euler angles \((\alpha, \beta, \gamma)\) using rate-gyro data, we analyzed the relationship between angular velocities \((\omega_x, \omega_y, \omega_z)\) and the derivatives of the Euler angles. The \textbf{ZYX Euler angle convention} was selected based on an analysis of the raw data provided by the sensor and the resulting plots of acceleration and angular velocity.
+
+\subsubsection{Justification for ZYX Euler Angle Convention}
+
+The choice of the ZYX convention was guided by observations derived from the data:
+\begin{itemize}
+    \item \textbf{Initial State:} In the static configuration (first 5 seconds), the acceleration plot revealed that the Z-axis was aligned with gravity, as indicated by a nearly constant value close to 9.8 $m/s^{2}$. This alignment identified the Z-axis as the global reference axis.
+    \item \textbf{Rotational Dynamics:} Following the static period, the angular velocity plots showed that the rotation about the Z-axis (\(\omega_z\)) was dominant, indicating that the initial rotation occurred around this axis. Subsequent rotations along the Y-axis (\(\omega_y\)) were observed as adjustments to refine orientation.
+    \item \textbf{Projection of Gravity:} During the motion, the projection of the gravitational vector shifted between axes, consistent with a sequence of rotations applied in the ZYX order. This sequence reflects how the sensor reorients itself in 3D space.
+\end{itemize}
+
+This evidence confirms that the ZYX convention naturally aligns with the physical behavior of the system as captured by the sensor data.
 
 \subsubsection{Theory and Mathematical Formulation}
 
 In the ZYX convention, the angles represent rotations applied in a specific order:
 \begin{itemize}
-    \item \textbf{Yaw (\(\gamma\))} — rotation about the global Z-axis. This initial rotation aligns the manipulator to face the target, orienting its base towards the goal.
-    \item \textbf{Pitch (\(\beta\))} — rotation about the new Y-axis after the yaw rotation. This step adjusts the vertical alignment of the manipulator relative to the goal.
-    \item \textbf{Roll (\(\alpha\))} — rotation about the new X-axis following the yaw and pitch rotations. This final adjustment ensures the gripper or tool is properly oriented for interaction with the target.
+    \item \textbf{Yaw (\(\alpha\))} — rotation about the global Z-axis. This initial rotation aligns the sensor to face a desired target or orientation.
+    \item \textbf{Pitch (\(\beta\))} — rotation about the new Y-axis after the yaw rotation. This step adjusts the sensor's vertical alignment relative to the target.
+    \item \textbf{Roll (\(\gamma\))} — rotation about the new X-axis following the yaw and pitch rotations. This final adjustment ensures precise alignment of the sensor or manipulator's tool for interaction with the target.
 \end{itemize}
 
-By properly parameterizing these rotations, we ensure predictable and precise control of the manipulator's movements, essential for tasks involving accurate positioning and orientation.
+By grounding the selection of this convention in data-driven analysis, we ensure that the chosen parameterization accurately represents the physical behavior of the system.
 
 \subsubsection{Parameterization}
 To reconstruct the orientation accurately, we define the following parameters:
 \begin{itemize}
-    \item \(\alpha, \beta, \gamma\): Euler angles representing the sensor's orientation in 3D space.
-    \item \(\omega_x, \omega_y, \omega_z\): Angular velocities provided by the rate-gyro, indicating rotational speeds around the sensor’s local axes.
+    \item \(\alpha, \beta, \gamma\): Euler angles representing the sensor orientation in 3D space.
+    \item \(\omega_x, \omega_y, \omega_z\): Angular velocities provided by the rate-gyro, indicating rotational speeds around the sensor local axes.
     \item \(\Delta t\): Time interval between consecutive measurements.
     \item \(\mathbf{T}(\alpha, \beta)\): Transformation matrix that relates the Euler angle rates to the angular velocities.
 \end{itemize}
+
 
 \subsubsection{Derivation of the Transformation Matrix}
 
@@ -325,16 +337,17 @@ To relate the angular velocities \((\omega_x, \omega_y, \omega_z)\) to the time 
 
 The individual rotation matrices for each Euler angle are:
 
-• Rotation about Z-axis \((\gamma)\):
+• Rotation about Z-axis \((\alpha)\):
 \begin{equation}
 \label{eq:R_z}
-\mathbf{R}_z(\gamma) =
+\mathbf{R}_z(\alpha) =
 \begin{bmatrix}
-\cos\gamma & -\sin\gamma & 0 \\
-\sin\gamma & \cos\gamma & 0 \\
+\cos\alpha & -\sin\alpha & 0 \\
+\sin\alpha & \cos\alpha & 0 \\
 0 & 0 & 1
 \end{bmatrix}
 \end{equation}
+
 
 • Rotation about Y-axis \((\beta)\):
 \begin{equation}
@@ -347,16 +360,17 @@ The individual rotation matrices for each Euler angle are:
 \end{bmatrix}
 \end{equation}
 
-• Rotation about X-axis \((\alpha)\):
+• Rotation about X-axis \((\gamma)\):
 \begin{equation}
 \label{eq:R_x}
-\mathbf{R}_x(\alpha) =
+\mathbf{R}_x(\gamma) =
 \begin{bmatrix}
 1 & 0 & 0 \\
-0 & \cos\alpha & -\sin\alpha \\
-0 & \sin\alpha & \cos\alpha
+0 & \cos\gamma & -\sin\gamma \\
+0 & \sin\gamma & \cos\gamma
 \end{bmatrix}
 \end{equation}
+
 
 \textbf{2. Combined Rotation Matrix}
 
@@ -364,7 +378,35 @@ The overall rotation matrix $\mathbf{R}$ representing the orientation is obtaine
 
 \begin{equation}
 \label{eq:R_total}
-\mathbf{R} = \mathbf{R}_z(\gamma) \mathbf{R}_y(\beta) \mathbf{R}_x(\alpha) .
+\mathbf{R} = \mathbf{R}_z(\alpha) \mathbf{R}_y(\beta) \mathbf{R}_x(\gamma) .
+\end{equation}
+
+\vspace{0.5cm}
+
+\textbf{Simplification Based on Experimental Observations}
+
+From the analysis of the resulting plots:
+\begin{itemize}
+    \item The angular velocity \(\omega_x\), associated with rotation about the \(X\)-axis, shows negligible variations.
+    \item The rotation \(\gamma\) about the \(X\)-axis is minimal and does not significantly contribute to the sensor orientation changes.
+\end{itemize}
+
+So, the rotation matrix~\ref{eq:R_x} can be approximated as the identity matrix, for this specific case, to avoid introducing unnecessary noise:
+\begin{equation}
+\label{eq:R_total_simplified}
+\mathbf{R} = \mathbf{R}_z(\alpha) \mathbf{R}_y(\beta) ,
+\end{equation}
+
+
+Computing~\ref{eq:R_total_simplified}, we get the rotation matrix:
+\begin{equation}
+\label{eq:Rotation_matrix_final}
+\mathbf{R} =
+\begin{bmatrix}
+\cos\alpha \cos\beta & -\sin\alpha & \cos\alpha \sin\beta \\
+\sin\alpha \cos\beta & \cos\alpha & \sin\alpha \sin\beta \\
+-\sin\beta & 0 & \cos\beta
+\end{bmatrix}
 \end{equation}
 
 \vspace{0.5cm}
