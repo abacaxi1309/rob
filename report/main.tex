@@ -161,63 +161,73 @@ Through the visualization of these components in a combined plot, we aim to:
 
 
 \begin{figure}[H]
-    \centerline{\includegraphics[scale=0.7]{Imagens/acclerationvstime.png}}
+    \centerline{\includegraphics[scale=0.7]{Imagens/accelerationvstime.png}}
     \caption{Acceleration vs time}
     \label{fig}
 \end{figure}
 
-\subsection*{Z-Axis (Blue Line)}
+\subsection*{Fixing the \textit{y}-Axis}
 
-In the acceleration graph, the blue line starts near \(10 \, \mathrm{m/s^2}\), which corresponds to the gravitational acceleration. This confirms that the blue line represents the \(z\)-axis, as it aligns with gravity during the static phase of the robotic arm.
+When the \textit{y}-axis is fixed, a rotation around this axis (\(\omega_y\)) results in the \textit{x}- and \textit{z}-axes exchanging roles in the coordinate system. Mathematically, this can be expressed using a rotation matrix around the \textit{y}-axis:
 
-In the angular velocity graph, the blue line represents \(\omega_z\) (angular velocity around the \(z\)-axis). As expected, there is a strong correlation between the changes in acceleration and angular velocity along this axis:
+\[
+\begin{bmatrix}
+x' \\
+y' \\
+z'
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos\theta & 0 & \sin\theta \\
+0 & 1 & 0 \\
+-\sin\theta & 0 & \cos\theta
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix}
+\]
+
+Here:
 \begin{itemize}
-    \item For example, at around 12 seconds, both acceleration and angular velocity show a significant negative dip, confirming the \(z\)-axis mapping.
+    \item \(x', y', z'\) are the new coordinates after rotation
+    \item \(x, y, z\) are the original coordinates
+    \item \(\theta\) is the angle of rotation around the \textit{y}-axis.
 \end{itemize}
 
-\subsection*{X-Axis (Red Line)}
-
-In the acceleration graph, the red line shows values near \(0 \, \mathrm{m/s^2}\) during the static phase, confirming that it is not aligned with gravity. However, during the dynamic phase (after \(\sim 5\) seconds), it shows significant positive and negative variations due to movement along this axis.
-
-In the angular velocity graph, the red line represents \(\omega_x\) (angular velocity around the \(x\)-axis). We observe that:
+This transformation shows that:
 \begin{itemize}
-    \item When the angular velocity (\(\omega_x\)) increases positively (e.g., around 6 seconds), the corresponding acceleration (\(a_x\)) also shows a positive variation.
-    \item This synchronized behavior validates that the red lines in both graphs represent the \(x\)-axis.
+    \item The acceleration along the \textit{x}-axis (\(a_x\)) is projected onto the \textit{z}-axis (\(a_z'\)) after rotation,
+    \item Similarly, the acceleration along the \textit{z}-axis (\(a_z\)) is projected onto the \textit{x}-axis (\(a_x'\)).
 \end{itemize}
 
-\subsection*{Y-Axis (Green Line)}
+This axis "swap" is most noticeable when the angular velocity around \textit{y} (\(\omega_y\)) increases, as this corresponds to the \textit{y}-axis starting to rotate significantly. In the acceleration graph, this behavior can be observed when the acceleration of \(a_x\) and \(a_z\) begin to swap.
+We can see that the accelerations (\(a_x\)) and (\(a_z\)) start to swap between the time interval of 10$s$ to 12$s$ wich corresponds to the peak in the \textit{y}-axis in the angular velocity graph between 10 and 12$s$ wich shows that we started to rotate around \textit{y}-axis.
 
-In the acceleration graph, the green line remains near a low positive value during the static phase, indicating that it is neither aligned with gravity nor orthogonal to it. During the dynamic phase, it exhibits moderate oscillations due to translational and rotational effects.
-
-In the angular velocity graph, the green line represents \(\omega_y\) (angular velocity around the \(y\)-axis). Observing the dynamic phase:
+\subsection*{Dynamic Behavior and Angular Velocity \(\omega_y\)}
+During the rotation around \textit{y}, the angular velocity \(\omega_y\) increases as the \textit{x}- and \textit{z}-axes dynamically swap roles. This is further supported by observing:
 \begin{itemize}
-    \item Positive peaks in \(\omega_y\) (e.g., around 6 seconds) correspond to similar positive peaks in \(a_y\), confirming the mapping of the green line to the \(y\)-axis.
+    \item A clear increase in \(\omega_y\) in the angular velocity graph,
+    \item Symmetric oscillatory patterns in the accelerations \(a_x\) and \(a_z\), indicating their dynamic exchange.
 \end{itemize}
 
-\subsection*{Alignment in Variation}
+As the angular velocity \(\omega_y\) increases, the system exhibits significant rotational motion in the \textit{xz} plane, while the accelerations are projected between the two axes. The relationship can be described as:
+\[
+a_x' = a_x \cos\theta + a_z \sin\theta,
+\]
+\[
+a_z' = -a_x \sin\theta + a_z \cos\theta,
+\]
+where \(\theta\) represents the instantaneous angle of rotation around the \textit{y}-axis.
 
-For all three axes (\(x\), \(y\), and \(z\)), we observe that when the angular velocity increases positively, the corresponding acceleration also increases positively. Similarly, when the angular velocity decreases or becomes negative, the corresponding acceleration exhibits a similar negative variation. This consistent relationship occurs because:
-
-\subsubsection*{Rotational Dynamics Influence Linear Dynamics}
+\subsection*{Key Observations}
+From the graphs:
 \begin{itemize}
-    \item In a robotic arm, each joint's motion generates a combination of tangential and centripetal accelerations, which are directly tied to the angular velocity and its rate of change.
-    \item The tangential acceleration depends on the rate of change of angular velocity (\(\dot{\omega}\)), while the centripetal acceleration depends on the square of angular velocity (\(\omega^2\)) and acts perpendicular to the direction of rotation.
+    \item When \(\omega_y \approx 0\), the accelerations \(a_x\) and \(a_z\) remain largely independent, with minimal projection effects.
+    \item As \(\omega_y\) increases, the projections of \(a_x\) onto \(a_z\) and vice versa become prominent, resulting in the observed axis swapping.
+    \item The \textit{y}-axis rotation introduces dynamic correlations between the accelerations in \(x\) and \(z\), explaining their exchange during periods of high \(\omega_y\).
 \end{itemize}
-
-\subsubsection*{Controlled System Dynamics}
-\begin{itemize}
-    \item Robotic arms are designed for precise and coordinated movements. Each joint is controlled by motors that apply predictable torques, resulting in synchronized changes in angular velocity and acceleration.
-    \item When a joint rotates positively (e.g., \(\omega_x > 0\)), it induces a linear acceleration along the same axis as part of the controlled rotational motion.
-\end{itemize}
-
-\subsubsection*{Fixed Axis of Rotation}
-\begin{itemize}
-    \item Unlike free-moving objects, the axes of rotation in a robotic arm are fixed, ensuring that the measured angular velocities and accelerations align in their respective directions without interference from external or random forces.
-\end{itemize}
-
-This predictable alignment between angular velocity and acceleration highlights the consistency of the robotic arm's motion and validates the observed variations in the provided graphs.
-
-
 
 \subsection{Task 2}
 
@@ -226,14 +236,14 @@ In this case, a median filter was applied to clean the data effectively. This fi
 The results achieved with the median filter demonstrated significant improvements, yielding smooth and reliable datasets without distortions. This preprocessing ensures that the data is well-prepared for reconstructing accurate trajectories and performing further analysis with confidence in the validity of the underlying patterns.
 
 \begin{figure}[H]
-    \centerline{\includegraphics[scale=0.8]{Imagens/filteredangularvsoriginal.png}}
+    \centerline{\includegraphics[scale=0.8]{Imagens/originalangularvsfiltered.png}}
     \caption{Filtered angular velocity vs original (using median filter).}
     \label{fig}
 \end{figure}
 
 
 \begin{figure}[H]
-    \centerline{\includegraphics[scale=0.8]{Imagens/filteredaccelerationvsoriginal.png}}
+    \centerline{\includegraphics[scale=0.8]{Imagens/originalaccelerationvsfiltered.png}}
     \caption{Filtered acceleration vs original (using median filter)}
     \label{fig}
 \end{figure}
