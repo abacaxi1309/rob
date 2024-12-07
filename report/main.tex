@@ -464,7 +464,7 @@ where \(\Omega\) is the skew-symmetric matrix of angular velocities:
 \end{bmatrix}.
 \end{equation}
 
-By expanding \(\dot{R}\) in terms of \(\dot{\alpha}\), \(\dot{\beta}\), and \(\dot{\gamma}\), we can relate the angular velocity components \((\omega_x, \omega_y, \omega_z)\) to the time derivatives of the Euler angles. This leads to the expression:
+Using the relationship~\ref{eq:R_dot_relation}, we expand \(\dot{R}\) in terms of the Euler angle derivatives to identify how \(\Omega\) relates to the angular velocity components. This leads to the expression:
 \begin{equation}
 \label{eq:omega_body_decomposition}
 \begin{bmatrix}
@@ -480,7 +480,7 @@ T(\alpha, \beta)
 \dot{\gamma}
 \end{bmatrix},
 \end{equation}
-where \(T(\alpha, \beta)\) is the Jacobian matrix that relates the rates of change of the Euler angles \((\dot{\alpha}, \dot{\beta}, \dot{\gamma})\) to the angular velocity components in the body frame.
+where \(T(\alpha, \beta)\) is the Jacobian matrix.
 
 \subsubsection{Angular Velocity in the Body Frame}
 
