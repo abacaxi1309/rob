@@ -291,290 +291,267 @@ The Median Filter stands out compared to these alternatives due to its:
 \subsection{Task 3}
 
 
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Task 4}
 
-To reconstruct the sensor orientation in Euler angles \((\alpha, \beta, \gamma)\) using rate-gyro data, we analyzed the relationship between angular velocities \((\omega_x, \omega_y, \omega_z)\) and the derivatives of the Euler angles. The \textbf{ZYX Euler angle convention} was selected based on an analysis of the raw data provided by the sensor and the resulting plots of acceleration and angular velocity.
+The objective of Task 4 is to derive the equations required to reconstruct the trajectory of the sensor in the orientation space defined by Euler angles \((\alpha, \beta, \gamma)\). Using the data from the rate-gyro sensor, the task focuses on relating the angular velocities measured in the body frame \((\omega_x, \omega_y, \omega_z)\) to the time derivatives of the Euler angles \((\dot{\alpha}, \dot{\beta}, \dot{\gamma})\), and integrating these equations to obtain the sensor's trajectory in orientation space.
 
-\subsubsection{Justification for ZYX Euler Angle Convention}
+\subsubsection{Orientation Representation}
 
-The choice of the ZYX convention was guided by observations derived from the data:
-\begin{itemize}
-    \item \textbf{Initial State:} In the static configuration (first 5 seconds), the acceleration plot revealed that the Z-axis was aligned with gravity, as indicated by a nearly constant value close to 9.8 $m/s^{2}$. This alignment identified the Z-axis as the global reference axis.
-    \item \textbf{Rotational Dynamics:} Following the static period, the angular velocity plots showed that the rotation about the Z-axis (\(\omega_z\)) was dominant, indicating that the initial rotation occurred around this axis. Subsequent rotations along the Y-axis (\(\omega_y\)) were observed as adjustments to refine orientation.
-    \item \textbf{Projection of Gravity:} During the motion, the projection of the gravitational vector shifted between axes, consistent with a sequence of rotations applied in the ZYX order. This sequence reflects how the sensor reorients itself in 3D space.
-\end{itemize}
+The orientation of the sensor is represented by a rotation matrix \(R\) that describes the transformation from the world frame to the body frame. Using the ZYX Euler convention, the rotation matrix \(R\) is the product of three elementary rotation matrices:
 
-This evidence confirms that the ZYX convention naturally aligns with the physical behavior of the system as captured by the sensor data.
-
-\subsubsection{Theory and Mathematical Formulation}
-
-In the ZYX convention, the angles represent rotations applied in a specific order:
-\begin{itemize}
-    \item \textbf{Yaw (\(\alpha\))} — rotation about the global Z-axis. This initial rotation aligns the sensor to face a desired target or orientation.
-    \item \textbf{Pitch (\(\beta\))} — rotation about the new Y-axis after the yaw rotation. This step adjusts the sensor's vertical alignment relative to the target.
-    \item \textbf{Roll (\(\gamma\))} — rotation about the new X-axis following the yaw and pitch rotations. This final adjustment ensures precise alignment of the sensor or manipulator's tool for interaction with the target.
-\end{itemize}
-
-By grounding the selection of this convention in data-driven analysis, we ensure that the chosen parameterization accurately represents the physical behavior of the system.
-
-\subsubsection{Parameterization}
-To reconstruct the orientation accurately, we define the following parameters:
-\begin{itemize}
-    \item \(\alpha, \beta, \gamma\): Euler angles representing the sensor orientation in 3D space.
-    \item \(\omega_x, \omega_y, \omega_z\): Angular velocities provided by the rate-gyro, indicating rotational speeds around the sensor local axes.
-    \item \(\Delta t\): Time interval between consecutive measurements.
-    \item \(\mathbf{T}(\alpha, \beta)\): Transformation matrix that relates the Euler angle rates to the angular velocities.
-\end{itemize}
-
-
-\subsubsection{Derivation of the Transformation Matrix}
-
-To relate the angular velocities \((\omega_x, \omega_y, \omega_z)\) to the time derivatives of the Euler angles \((\dot{\alpha}, \dot{\beta}, \dot{\gamma})\), we derive the transformation matrix based on the sequence of rotations in the ZYX Euler angle convention.
-
-\vspace{0.5cm}
-
-\textbf{1. Rotation Matrices}
-
-The individual rotation matrices for each Euler angle are:
-
-• Rotation about Z-axis \((\alpha)\):
 \begin{equation}
-\label{eq:R_z}
-\mathbf{R}_z(\alpha) =
+\label{eq:R_combined_task4}
+R = R_z(\alpha) R_y(\beta) R_x(\gamma),
+\end{equation}
+where:
+\begin{equation}
+\label{eq:Rz}
+R_z(\alpha) =
 \begin{bmatrix}
 \cos\alpha & -\sin\alpha & 0 \\
 \sin\alpha & \cos\alpha & 0 \\
 0 & 0 & 1
-\end{bmatrix}
+\end{bmatrix},
 \end{equation}
 
-
-• Rotation about Y-axis \((\beta)\):
 \begin{equation}
-\label{eq:R_y}
-\mathbf{R}_y(\beta) =
+\label{eq:Ry}
+R_y(\beta) =
 \begin{bmatrix}
 \cos\beta & 0 & \sin\beta \\
 0 & 1 & 0 \\
 -\sin\beta & 0 & \cos\beta
-\end{bmatrix}
+\end{bmatrix}, 
 \end{equation}
-
-• Rotation about X-axis \((\gamma)\):
 \begin{equation}
-\label{eq:R_x}
-\mathbf{R}_x(\gamma) =
+\label{eq:Rx}
+R_x(\gamma) =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & \cos\gamma & -\sin\gamma \\
 0 & \sin\gamma & \cos\gamma
-\end{bmatrix}
-\end{equation}
-
-
-\textbf{2. Combined Rotation Matrix}
-
-The overall rotation matrix $\mathbf{R}$ representing the orientation is obtained by multiplying the individual rotation matrices in the order of rotations:
-
-\begin{equation}
-\label{eq:R_total}
-\mathbf{R} = \mathbf{R}_z(\alpha) \mathbf{R}_y(\beta) \mathbf{R}_x(\gamma) .
-\end{equation}
-
-\vspace{0.5cm}
-
-\textbf{Simplification Based on Experimental Observations}
-
-From the analysis of the resulting plots:
-\begin{itemize}
-    \item The angular velocity \(\omega_x\), associated with rotation about the \(X\)-axis, shows negligible variations.
-    \item The rotation \(\gamma\) about the \(X\)-axis is minimal and does not significantly contribute to the sensor orientation changes.
-\end{itemize}
-
-So, the rotation matrix~\ref{eq:R_x} can be approximated as the identity matrix, for this specific case, to avoid introducing unnecessary noise:
-\begin{equation}
-\label{eq:R_total_simplified}
-\mathbf{R} = \mathbf{R}_z(\alpha) \mathbf{R}_y(\beta) ,
-\end{equation}
-
-
-Computing~\ref{eq:R_total_simplified}, we get the rotation matrix:
-\begin{equation}
-\label{eq:Rotation_matrix_final}
-\mathbf{R} =
-\begin{bmatrix}
-\cos\alpha \cos\beta & -\sin\alpha & \cos\alpha \sin\beta \\
-\sin\alpha \cos\beta & \cos\alpha & \sin\alpha \sin\beta \\
--\sin\beta & 0 & \cos\beta
-\end{bmatrix}
-\end{equation}
-
-\vspace{0.5cm}
-
-\textbf{3. Angular Velocity in Terms of Euler Angle Rates}
-
-In the ZYX Euler angle convention, the roll angle $\alpha$ is the last rotation applied. Consequently, its rate of change $\dot{\alpha}$ represents rotation about the current X-axis, which remains fixed relative to the body frame after the yaw ($\gamma$) and pitch ($\beta$) rotations. As a result, $\dot{\alpha}$ directly contributes to the angular velocity vector along the X-axis without requiring any transformation.
-
-The angular velocity vector $\boldsymbol{\omega}$ in the body frame can be expressed in terms of the Euler angle rates as follows:
-
-\begin{equation}
-    \label{eq:angular_velocity}
-    \boldsymbol{\omega}=
-    \begin{bmatrix}
-        \omega_x \\
-        \omega_y \\
-        \omega_z
-    \end{bmatrix}
-    =
-    \begin{bmatrix}
-        \dot{\alpha} \\
-        0 \\
-        0
-    \end{bmatrix}
-    +
-    \mathbf{R}_x(-\alpha)
-    \begin{bmatrix}
-        0 \\
-        \dot{\beta} \\
-        0
-    \end{bmatrix}
-    +
-    \mathbf{R}_x(-\alpha) \mathbf{R}_y(-\beta)
-    \begin{bmatrix}
-        0 \\
-        0 \\
-        \dot{\gamma}
-    \end{bmatrix}
-\end{equation}
-
-The matrices $\mathbf{R}_x(-\alpha)$ and $\mathbf{R}_y(-\beta)$ are the inverse rotations of $\mathbf{R}_x(\alpha)$ and $\mathbf{R}_y(\beta)$, respectively. Since rotation matrices are orthogonal, the inverse is equivalent to their transpose:
-\[
-\mathbf{R}_x(-\alpha) = \mathbf{R}_x(\alpha)^T, \quad \mathbf{R}_y(-\beta) = \mathbf{R}_y(\beta)^T.
-\]
-
-\textbf{Expanded Form of Angular Velocity:}
-
-Expanding the terms in Equation~\ref{eq:angular_velocity} provides:
-
-\begin{equation}
-\boldsymbol{\omega} =
-\begin{bmatrix}
-    \dot{\alpha} \\
-    0 \\
-    0
-\end{bmatrix}
-+
-\begin{bmatrix}
-    1 & 0 & 0 \\
-    0 & \cos\alpha & \sin\alpha \\
-    0 & -\sin\alpha & \cos\alpha
-\end{bmatrix}
-\begin{bmatrix}
-    0 \\
-    \dot{\beta} \\
-    0
-\end{bmatrix}
-+
-\begin{bmatrix}
-    1 & 0 & 0 \\
-    0 & \cos\alpha & \sin\alpha \\
-    0 & -\sin\alpha & \cos\alpha
-\end{bmatrix}
-\begin{bmatrix}
-    \cos\beta & 0 & -\sin\beta \\
-    0 & 1 & 0 \\
-    \sin\beta & 0 & \cos\beta
-\end{bmatrix}
-\begin{bmatrix}
-    0 \\
-    0 \\
-    \dot{\gamma}
 \end{bmatrix}.
 \end{equation}
 
-This equation forms the foundation for deriving the transformation matrix $\mathbf{T}(\alpha, \beta)$, which relates the angular velocities $(\omega_x, \omega_y, \omega_z)$ to the Euler angle rates $(\dot{\alpha}, \dot{\beta}, \dot{\gamma})$.
 
-\vspace{0.5cm}
-
-\textbf{4. Transformation Matrix}
-
-Combining the terms in~\ref{eq:angular_velocity} we get the transformation matrix
-
+By multiplying~\ref{eq:Rz},~\ref{eq:Ry} and~\ref{eq:Rx}, we get~\ref{eq:R_combined_task4}:
 \begin{equation}
-    \label{eq:transformation_matrix_corrected}
-    \begin{bmatrix}
-    \omega_x \\
-    \omega_y \\
-    \omega_z
-    \end{bmatrix}
-    =
-    \underbrace{
-    \begin{bmatrix}
-    1 & 0 & -\sin\beta \\
-    0 & \cos\alpha & \sin\alpha \cos\beta \\
-    0 & -\sin\alpha & \cos\alpha \cos\beta
-    \end{bmatrix}
-    }_{\mathbf{T}(\alpha, \beta)}
-    \begin{bmatrix}
-    \dot{\alpha} \\
-    \dot{\beta} \\
-    \dot{\gamma}
-    \end{bmatrix}.
-\end{equation}
-
-\textbf{5. Inverting the Transformation Matrix}
-
-To compute the Euler angle rates from the angular velocities, we invert the~\ref{eq:transformation_matrix_corrected}
-
-\begin{equation}
-    \label{eq:euler_rates}
-    \begin{bmatrix}
-    \dot{\alpha} \\
-    \dot{\beta} \\
-    \dot{\gamma}
-    \end{bmatrix}
-    =
-    \mathbf{T}^{-1}(\alpha, \beta)
-    \cdot
-    \begin{bmatrix}
-    \omega_x \\
-    \omega_y \\
-    \omega_z
-    \end{bmatrix}
-\end{equation}
-
-And we get the inverse transformation matrix $\mathbf{T}^{-1}(\alpha, \beta)$:
-
-\begin{equation}
-\label{eq:inverse_transformation_matrix}
-\mathbf{T}^{-1}(\alpha, \beta) =
+\label{eq:R_full_task4}
+R =
 \begin{bmatrix}
-1 & \sin\alpha \tan\beta & \cos\alpha \tan\beta \\
-0 & \cos\alpha & -\sin\alpha \\
-0 & \dfrac{\sin\alpha}{\cos\beta} & \dfrac{\cos\alpha}{\cos\beta}
+\cos\alpha\cos\beta & \cos\alpha\sin\beta\sin\gamma - \sin\alpha\cos\gamma & \cos\alpha\sin\beta\cos\gamma + \sin\alpha\sin\gamma \\
+\sin\alpha\cos\beta & \sin\alpha\sin\beta\sin\gamma + \cos\alpha\cos\gamma & \sin\alpha\sin\beta\cos\gamma - \cos\alpha\sin\gamma \\
+-\sin\beta & \cos\beta\sin\gamma & \cos\beta\cos\gamma
+\end{bmatrix}.
+\end{equation}
+
+
+\subsubsection{Angular Velocity in the Body Frame}
+
+The angular velocity vector in the body frame, \(\boldsymbol{\Omega}_{\text{body}} = [\omega_x, \omega_y, \omega_z]^T\), can be derived from the contributions of the time derivatives of the Euler angles \((\dot{\alpha}, \dot{\beta}, \dot{\gamma})\) in the ZYX sequence.
+\begin{equation}
+\label{eq:omega_body_decomposition}
+\boldsymbol{\Omega}_{\text{body}} =
+\begin{bmatrix}
+\dot{\alpha} \\
+0 \\
+0
+\end{bmatrix}_{\text{inertial}}
++ R_z^T
+\begin{bmatrix}
+0 \\
+\dot{\beta} \\
+0
+\end{bmatrix}_{\text{inertial}}
++ (R_y R_z)^T
+\begin{bmatrix}
+0 \\
+0 \\
+\dot{\gamma}
+\end{bmatrix}_{\text{inertial}}.
+\end{equation}
+
+\subsubsection{Parametrization:}
+\paragraph{Yaw (\(\alpha\)):}
+The first term represents the angular velocity due to yaw (\(\dot{\alpha}\)) about the \(Z\)-axis in the inertial frame. Since this axis is fixed in the inertial frame, no transformation is required:
+\begin{equation}
+\label{eq:omega_yaw}
+\begin{bmatrix}
+\dot{\alpha} \\
+0 \\
+0
+\end{bmatrix}.
+\end{equation}
+
+\paragraph{Pitch (\(\beta\)):}
+The second term represents the contribution from pitch (\(\dot{\beta}\)), which occurs around the rotated \(Y'\)-axis. This requires transformation into the body frame using the transpose of the yaw rotation matrix (\(R_z^T\)):
+\begin{equation}
+\label{eq:omega_pitch}
+R_z^T
+\begin{bmatrix}
+0 \\
+\dot{\beta} \\
+0
 \end{bmatrix}
+=
+\begin{bmatrix}
+\sin\alpha\dot{\beta} \\
+\cos\alpha\dot{\beta} \\
+0
+\end{bmatrix}.
 \end{equation}
 
-\subsubsection{Final Equations}
+\paragraph{Roll (\(\gamma\)):}
+The third term accounts for roll (\(\dot{\gamma}\)), which occurs around the twice-rotated \(X''\)-axis. This contribution is transformed into the body frame using the transpose of the combined yaw and pitch rotation matrices \((R_y R_z)^T\):
+\begin{equation}
+\label{eq:omega_roll}
+(R_y R_z)^T
+\begin{bmatrix}
+0 \\
+0 \\
+\dot{\gamma}
+\end{bmatrix}
+=
+\begin{bmatrix}
+-\sin\beta\cos\alpha\dot{\gamma} \\
+-\sin\beta\sin\alpha\dot{\gamma} \\
+\cos\beta\dot{\gamma}
+\end{bmatrix}.
+\end{equation}
 
-Using Equation~\eqref{eq:inverse_transformation_matrix}, the rates of change of the Euler angles are derived as follows:
+\paragraph{Expanded Expression:}
+Summing all the terms gives:
+\begin{equation}
+\label{eq:omega_body_expanded}
+\boldsymbol{\Omega}_{\text{body}} =
+\begin{bmatrix}
+\dot{\alpha} + \sin\alpha\dot{\beta} - \sin\beta\cos\alpha\dot{\gamma} \\
+\cos\alpha\dot{\beta} - \sin\beta\sin\alpha\dot{\gamma} \\
+\cos\beta\dot{\gamma}
+\end{bmatrix}.
+\end{equation}
+
+\subsubsection{Reconstructing the Trajectory of the Sensor in Orientation Space}
+
+The reconstruction of the trajectory of the sensor in the orientation space defined by Euler angles \((\alpha, \beta, \gamma)\) involves several steps. Using the data obtained from the rate-gyro sensor (\(\omega_x, \omega_y, \omega_z\)), the following procedure is applied:
+
+\paragraph{1. Relating Angular Velocities to Euler Angles}
+
+The angular velocity vector in the body frame, \(\boldsymbol{\Omega}_{\text{body}} = [\omega_x, \omega_y, \omega_z]^T\), is related to the time derivatives of the Euler angles \((\dot{\alpha}, \dot{\beta}, \dot{\gamma})\) through the Jacobian matrix \(T(\alpha, \beta)\):
+\begin{equation}
+\label{eq:jacobian_definition}
+\begin{bmatrix}
+\omega_x \\
+\omega_y \\
+\omega_z
+\end{bmatrix}
+=
+T(\alpha, \beta)
+\begin{bmatrix}
+\dot{\alpha} \\
+\dot{\beta} \\
+\dot{\gamma}
+\end{bmatrix},
+\end{equation}
+
+where \(T(\alpha, \beta)\) is the Jacobian matrix that relates the rates of change of the Euler angles \((\dot{\alpha}, \dot{\beta}, \dot{\gamma})\) to the angular velocity components in the body frame.
+
+From~\ref{eq:omega_body_expanded} we get the Jacobian matrix:
+\begin{equation}
+\label{eq:jacobian_matrix}
+T(\alpha, \beta) =
+\begin{bmatrix}
+1 & \sin\alpha & -\sin\beta \cos\alpha \\
+0 & \cos\alpha & -\sin\beta \sin\alpha \\
+0 & 0 & \cos\beta
+\end{bmatrix}.
+\end{equation}
+
+To calculate the time derivatives of the Euler angles, the inverse of \(T(\alpha, \beta)\) is used, knowing \(\cos\beta \neq 0\):
 
 \begin{equation}
-\label{eq:alpha_dot_final}
-\dot{\alpha} = \omega_x + \sin\alpha \tan\beta \cdot \omega_y + \cos\alpha \tan\beta \cdot \omega_z,
+T(\alpha, \beta)^{-1} =
+\begin{bmatrix}
+\label{eq:jacobian_inverse}
+1 & 0 & -\sin\beta \\
+0 & \cos\alpha & \sin\alpha \cos\beta \\
+0 & -\sin\alpha & \cos\alpha \cos\beta
+\end{bmatrix},
 \end{equation}
+
+
+Thus, the time derivatives of the Euler angles are computed as:
+\begin{equation}
+\begin{bmatrix}
+\label{eq:euler_derivatives}
+\dot{\alpha} \\
+\dot{\beta} \\
+\dot{\gamma}
+\end{bmatrix}
+=
+T(\alpha, \beta)^{-1}
+\begin{bmatrix}
+\omega_x \\
+\omega_y \\
+\omega_z
+\end{bmatrix}.  
+\end{equation}
+
+
+Were we get the equations to reconstruct the trajectory of the sensor in the orientation
+(Euler angles alpha, beta, gamma) space from the rate-gyro data:
 
 \begin{equation}
-\label{eq:beta_dot_final}
-\dot{\beta} = \cos\alpha \cdot \omega_y - \sin\alpha \cdot \omega_z,
+\label{eq:alpha}
+\dot{\alpha} = \omega_x + \omega_z \sin\beta,
 \end{equation}
+
 
 \begin{equation}
-\label{eq:gamma_dot_final}
-\dot{\gamma} = \frac{\sin\alpha}{\cos\beta} \cdot \omega_y + \frac{\cos\alpha}{\cos\beta} \cdot \omega_z.
+\label{eq:beta}
+\dot{\beta} = \omega_y \cos\alpha - \omega_z \sin\alpha \cos\beta,  
 \end{equation}
 
-These equations relate the angular velocities $(\omega_x, \omega_y, \omega_z)$ to the rates of change of the Euler angles $(\dot{\alpha}, \dot{\beta}, \dot{\gamma})$ in the ZYX convention, and they will serve as the foundation for reconstructing the sensor's orientation.
+
+\begin{equation}
+\label{eq:gamma}
+\dot{\gamma} = \omega_y \sin\alpha + \omega_z \cos\alpha \cos\beta.
+\end{equation}
+
+
+\subsection{Numerical Integration of Euler Angles}
+The Euler angles are updated using numerical integration:
+\begin{equation}
+\label{eq:integration_alpha}
+\alpha(t + \Delta t) = \alpha(t) + \dot{\alpha}(t) \Delta t,
+\end{equation}
+\begin{equation}
+\label{eq:integration_beta}
+\beta(t + \Delta t) = \beta(t) + \dot{\beta}(t) \Delta t,
+\end{equation}
+\begin{equation}
+\label{eq:integration_gamma}
+\gamma(t + \Delta t) = \gamma(t) + \dot{\gamma}(t) \Delta t.
+\end{equation}
+
+where \(\Delta t\) is the time interval between consecutive samples, obtained from the sensor "time" column.
+
+\paragraph{Conclusion}
+
+This procedure allows for the reconstruction of the trajectory in orientation space using only the rate-gyro data and numerical integration. By iteratively computing \((\dot{\alpha}, \dot{\beta}, \dot{\gamma})\) and integrating, the orientation of the sensor can be tracked over time in terms of the Euler angles \((\alpha, \beta, \gamma)\).
+
+
 
 
 \subsection{Task 5}

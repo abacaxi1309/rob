@@ -11,14 +11,20 @@
 \contentsline {paragraph}{5. Outliers Filters}{8}{figure.caption.5}%
 \contentsline {subsection}{\numberline {3.3}Task 3}{9}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Task 4}{9}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}Justification for ZYX Euler Angle Convention}{9}{subsubsection.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}Theory and Mathematical Formulation}{9}{subsubsection.3.4.2}%
-\contentsline {subsubsection}{\numberline {3.4.3}Parameterization}{10}{subsubsection.3.4.3}%
-\contentsline {subsubsection}{\numberline {3.4.4}Derivation of the Transformation Matrix}{10}{subsubsection.3.4.4}%
-\contentsline {subsubsection}{\numberline {3.4.5}Final Equations}{12}{subsubsection.3.4.5}%
-\contentsline {subsection}{\numberline {3.5}Task 5}{12}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}Task 6}{12}{subsection.3.6}%
-\contentsline {subsection}{\numberline {3.7}Task 7}{12}{subsection.3.7}%
-\contentsline {subsection}{\numberline {3.8}Task 8}{12}{subsection.3.8}%
+\contentsline {subsubsection}{\numberline {3.4.1}Orientation Representation}{9}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Angular Velocity in the Body Frame}{9}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Parametrization:}{10}{subsubsection.3.4.3}%
+\contentsline {paragraph}{Yaw (\(\alpha \)):}{10}{subsubsection.3.4.3}%
+\contentsline {paragraph}{Pitch (\(\beta \)):}{10}{equation.3.7}%
+\contentsline {paragraph}{Roll (\(\gamma \)):}{10}{equation.3.8}%
+\contentsline {paragraph}{Expanded Expression:}{10}{equation.3.9}%
+\contentsline {subsubsection}{\numberline {3.4.4}Reconstructing the Trajectory of the Sensor in Orientation Space}{10}{subsubsection.3.4.4}%
+\contentsline {paragraph}{1. Relating Angular Velocities to Euler Angles}{10}{subsubsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.5}Numerical Integration of Euler Angles}{11}{subsection.3.5}%
+\contentsline {paragraph}{Conclusion}{11}{equation.3.20}%
+\contentsline {subsection}{\numberline {3.6}Task 5}{12}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Task 6}{12}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}Task 7}{12}{subsection.3.8}%
+\contentsline {subsection}{\numberline {3.9}Task 8}{12}{subsection.3.9}%
 \contentsline {section}{\numberline {4}Conclusion}{12}{section.4}%
 \contentsline {section}{Appendices}{13}{section*.6}%
