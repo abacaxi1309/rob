@@ -384,9 +384,12 @@ To reconstruct the orientation accurately, we define the following parameters:
 \begin{itemize}
     \item \(\alpha, \beta, \gamma\): Euler angles representing the sensor orientation in 3D space.
     \item \(\omega_x, \omega_y, \omega_z\): Angular velocities provided by the rate-gyro, indicating rotational speeds around the sensor local axes.
+    \item \(\Omega_{\text{body}} = [\omega_x, \omega_y, \omega_z]^T\): Angular velocity vector in the body frame.
+    \item \(\text{T}(\alpha, \beta)\): Transformation matrix that relates the Euler angle rates to the angular velocities.
     \item \(\Delta t\): Time interval between consecutive measurements.
-    \item \(\mathbf{T}(\alpha, \beta)\): Transformation matrix that relates the Euler angle rates to the angular velocities.
 \end{itemize}
+
+\vspace{0.5cm}
 
 In the ZYX convention, the angles represent rotations applied in a specific order:
 \begin{itemize}
@@ -493,7 +496,7 @@ Each angular velocity component is derived as follows:
     \item The roll rate (\(\dot{\gamma}\)) contributes along the twice-rotated \(X''\)-axis, incorporating the effects of both yaw and pitch rotations.
 \end{itemize}
 
-To transform these contributions into the body frame, the transpose rotation matrices are applied, yielding the following decomposition:
+To transform these contributions into the body frame, the transpose rotation matrices are applied, resulting the following decomposition:
 \begin{equation}
 \label{eq:omega_body_decomposition}
 \boldsymbol{\Omega}_{\text{body}} =
