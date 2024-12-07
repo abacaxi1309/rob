@@ -291,10 +291,83 @@ The Median Filter stands out compared to these alternatives due to its:
 \subsection{Task 3}
 
 
+To reconstruct the sensor position in Cartesian coordinates  \(({x}, {y}, {z})\) using accelerometer data, we analyze the relationship between acceleration data \((\ddot{x}, \ddot{y}, \ddot{z}\)) and the velocity data we get from integrating the acceleration \((\dot{x}, \dot{y}, \dot{z}\)) . 
+
+
+\subsubsection{Theory and Mathematical Formulation}
+
+\begin{itemize}
+    \item \textbf{X} — Position on the global x axis.  
+    \item \textbf{Y} — Position on the global y axis.
+    \item \textbf{Z} — Position on the global z axis.
+\end{itemize}
+
+\paragraph{Parameterization}
+
+To reconstruct the position accurately, we define the following parameters:
+\begin{itemize}
+    \item \( x, y, z \): Position components in the Cartesian space.
+    \item \(\dot{x},\dot{y},\dot{z}\): Velocity components, which are the first derivatives of position (first derivatives).
+    \item \(\ddot{x},\ddot{y},\ddot{z}\): Acceleration components, which are the second derivatives of position (second derivatives).
+    \item \(\Delta{t}\): Sampling period of the acceleration data. 
+\end{itemize} 
+
+\subsubsection{Effect of Gravity}
+
+The acceleration due to gravity must be taken into account when reconstructing the sensor position in the Cartesian coordinates. The gravitational acceleration is approximated as \( g = 9.8 \, \text{m/s}^2 \) in the downward direction along the global z-axis. The total acceleration vector in the world frame, \( \mathbf{A} \), is the final accelerations only due to the motion of the sensor.
+
+The equation for the total acceleration vector is:
+
+\[
+\mathbf{A} = \mathbf{R} \cdot \begin{bmatrix} \ddot{x} \\ \ddot{y} \\ \ddot{z} \end{bmatrix} - 9.8 \cdot \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}
+\]
+
+Where:
+- \( \mathbf{R} \) is the transformation matrix, calculated in \textbf{Orientation Representation}, that relates the accelerometer's local frame to the world frame.
+- \( \ddot{x}, \ddot{y}, \ddot{z} \) are the accelerations along the x, y, and z axes, respectively.
+- The second term \( -9.8 \cdot \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} \) represents the gravitational acceleration in the world frame.
+
+This equation allows us to separate the accelerometer’s linear motion from the gravitational effect, enabling a more accurate reconstruction of the sensor's position.
 
 
 
 
+\section*{Position and Velocity Update}
+
+\subsection*{General Formulas}
+
+In general, the position update equations for discrete system can be written as:
+\[
+\mathbf{p}(t + \Delta t) = \mathbf{p}(t) + \mathbf{v}(t) \Delta t + \frac{1}{2} \mathbf{a}(t) (\Delta t)^2
+\]
+
+The velocity update equation is:
+\[
+\mathbf{v}(t + \Delta t) = \mathbf{v}(t) + \mathbf{a}(t) \Delta t
+\]
+
+\subsection*{Matrix Notation for \(x, y, z\) Components}
+
+Using matrix notation, the updates become:
+
+\[
+\begin{bmatrix} x(t+ \Delta t) \\ y(t+ \Delta t) \\ z(t+ \Delta t) \end{bmatrix}
+= 
+\begin{bmatrix} x(t) \\ y(t) \\ z(t) \end{bmatrix}
++ 
+\begin{bmatrix} \dot{x}(t) \\ \dot{y}(t) \\ \dot{z}(t) \end{bmatrix} \Delta t
++ \frac{1}{2}
+\begin{bmatrix} \ddot{x}(t) \\ \ddot{y}(t) \\ \ddot{z}(t) \end{bmatrix} (\Delta t)^2
+\]
+
+For velocity:
+\[
+\begin{bmatrix} \dot{x}(t + \Delta t) \\ \dot{y}(t + \Delta t) \\ \dot{z}(t + \Delta t) \end{bmatrix}
+= 
+\begin{bmatrix} \dot{x}(t) \\ \dot{y}(t) \\ \dot{z}(t) \end{bmatrix}
++ 
+\begin{bmatrix} \ddot{x}(t) \\ \ddot{y}(t) \\ \ddot{z}(t) \end{bmatrix} \Delta t
+\]
 
 
 
