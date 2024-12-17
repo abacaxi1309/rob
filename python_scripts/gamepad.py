@@ -31,7 +31,7 @@ def gamepad_control():
                     horizontal_value = event.value
 
                     # Only return values for significant movements (to filter noise)
-                    if abs(horizontal_value) > 0.1:  # Ignore small movements
+                    if abs(horizontal_value) > 0.2:  # Ignore small movements
                         return horizontal_value
 
     pygame.quit()
