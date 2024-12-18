@@ -4,7 +4,7 @@ from matplotlib.patches import Rectangle
 
 #constant velocity 10 m/s
 v = 10
-L = 2
+L = 2.5
 dt =0.1
 ws = 0
 
