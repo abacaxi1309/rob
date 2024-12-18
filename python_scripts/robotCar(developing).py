@@ -12,10 +12,10 @@ def kinematic_model_update(state, inputs, wheelbase, dt):
     x, y, theta, phi = state
     V, ws = inputs
 
-    # Update using the correct kinematic model based on the provided matrix representation
-    dx = V * np.cos(theta)
-    dy = V * np.sin(theta)
-    dtheta = (V * np.tan(phi)) / wheelbase
+    # State-space model based on the provided matrix representation
+    dx = V * np.cos(theta) * np.cos(phi)
+    dy = V * np.sin(theta) * np.cos(phi)
+    dtheta = (V / wheelbase) * np.sin(phi)
     dphi = ws
 
     # Discretize using Euler method
@@ -74,3 +74,4 @@ def simulate(initial_state, inputs_fn, wheelbase, dt):
         t += dt  # Increment time
 
         yield state  # Yield the current state for real-time use
+

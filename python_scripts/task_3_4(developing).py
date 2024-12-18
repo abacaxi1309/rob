@@ -1,8 +1,8 @@
 import pygame
 import math
 import matplotlib.pyplot as plt
-from gamepad_developing import gamepad_control
-from robotCar_developing import kinematic_model_update
+from gamepad import gamepad_control
+from robotCar import kinematic_model_update
 
 # Constants for the simulation
 SCREEN_WIDTH = 800
