@@ -12,6 +12,10 @@ def kinematic_model_update(state, inputs, wheelbase, dt):
     x, y, theta, phi = state
     V, ws = inputs
 
+    # Limit the steering angle phi
+    max_steering_angle = np.pi / 4  # Limite de 45 graus
+    phi = np.clip(phi, -max_steering_angle, max_steering_angle)
+
     # State-space model based on the provided matrix representation
     dx = V * np.cos(theta) * np.cos(phi)
     dy = V * np.sin(theta) * np.cos(phi)
