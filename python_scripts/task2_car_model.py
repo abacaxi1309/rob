@@ -13,7 +13,7 @@ def kinematic_model_update(state, inputs, wheelbase, dt):
     V, ws = inputs
 
     # Limit the steering angle phi
-    max_steering_angle = np.pi / 4  # Limite de 45 graus
+    max_steering_angle = np.pi / 4  # Limite de graus
     phi = np.clip(phi, -max_steering_angle, max_steering_angle)
 
     # State-space model based on the provided matrix representation
@@ -41,23 +41,22 @@ def get_car_corners(state, car_length, car_width):
     :return: Coordinates of the four corners of the car.
     """
     x, y, theta, phi = state
-
+    
     # Rear axle center
     rear_x = x - (car_length / 2) * np.cos(theta)
     rear_y = y - (car_length / 2) * np.sin(theta)
 
     # Front axle center
-    front_x = x + (car_length / 2) * np.cos(theta + phi)
-    front_y = y + (car_length / 2) * np.sin(theta + phi)
+    front_x = x + (car_length / 2) * np.cos(theta)
+    front_y = y + (car_length / 2) * np.sin(theta)
 
-    # Corners of the car
-    corners = {
-        "rear_left": (rear_x - (car_width / 2) * np.sin(theta), rear_y + (car_width / 2) * np.cos(theta)),
-        "rear_right": (rear_x + (car_width / 2) * np.sin(theta), rear_y - (car_width / 2) * np.cos(theta)),
-        "front_left": (front_x - (car_width / 2) * np.sin(theta + phi), front_y + (car_width / 2) * np.cos(theta + phi)),
-        "front_right": (front_x + (car_width / 2) * np.sin(theta + phi), front_y - (car_width / 2) * np.cos(theta + phi))
-    }
-
+    # Corners of the car: bl, br, fl, fr
+    corners = [
+        (rear_x + (car_width / 2) * np.sin(theta), rear_y - (car_width / 2) * np.cos(theta)),
+        (rear_x - (car_width / 2) * np.sin(theta), rear_y + (car_width / 2) * np.cos(theta)), 
+        (front_x + (car_width / 2) * np.sin(theta), front_y - (car_width / 2) * np.cos(theta)),
+        (front_x - (car_width / 2) * np.sin(theta), front_y + (car_width / 2) * np.cos(theta)),   
+    ]
     return corners
 
 def simulate(initial_state, inputs_fn, wheelbase, dt):
