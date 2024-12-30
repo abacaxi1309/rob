@@ -2,7 +2,7 @@ import numpy as np
 
 def kinematic_model_update(state, inputs, wheelbase, dt):
     """
-    Update the state vector using the kinematic model and matrix representation as shown in the provided image.
+    Update the state vector using the kinematic model with a realistic steering recentralization.
     :param state: Current state vector [x, y, theta, phi].
     :param inputs: Control inputs [velocity (V), steering rate (ws)].
     :param wheelbase: Distance between front and rear axles in meters.
@@ -13,15 +13,23 @@ def kinematic_model_update(state, inputs, wheelbase, dt):
     V, ws = inputs
 
     # Limit the steering angle phi
-    max_steering_angle = np.pi / 4  # Limite de graus
+    max_steering_angle = np.pi / 4  # Limit in radians (45 degrees)
     phi = np.clip(phi, -max_steering_angle, max_steering_angle)
+
+    # Realistic steering recentralization based on velocity and caster effect
+    caster_effect = 0.6  # Proportional constant for caster restoring force
+    speed_factor = np.abs(V) / (wheelbase + 1e-5)  # Influence of velocity on recentralization
+    restoring_force = -caster_effect * phi * speed_factor
+
+    # Apply recentralization to the steering rate
+    ws += restoring_force
 
     # State-space model based on the provided matrix representation
     dx = V * np.cos(theta) * np.cos(phi)
     dy = V * np.sin(theta) * np.cos(phi)
     dtheta = (V / wheelbase) * np.sin(phi)
     dphi = ws
-
+    
     # Discretize using Euler method
     new_state = np.array([
         x + dx * dt,

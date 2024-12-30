@@ -118,6 +118,7 @@ class LaneSimulation:
         plt.axhline(y=self.inside_left_boundary, color='r', linestyle='--', label="Left Lane")
         plt.axhline(y=self.inside_right_boundary, color='g', linestyle='--', label="Right Lane")
 
+
         # Draw car center of mass position
         plt.plot(self.times, self.positions_center, label="Car Center Position", color='blue')
 

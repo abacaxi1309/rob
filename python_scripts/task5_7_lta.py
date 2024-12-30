@@ -177,8 +177,10 @@ class LaneSimulation:
         plt.gca().invert_yaxis()
         plt.show()
 
+
     def calculate_lateral_error(self, state):
         """Calculate lateral error based on front wheel positions."""
+
         corners = get_car_corners(state, self.CAR_LENGTH, self.CAR_WIDTH)
         front_left = corners[2][0]  # x-coordinate of front left wheel
         front_right = corners[3][0]  # x-coordinate of front right wheel
@@ -199,6 +201,7 @@ class LaneSimulation:
 
     def pid_cost_function(self, params):
         """Cost function to evaluate PID performance."""
+
         Kp, Ki, Kd = params
         self.reset_simulation()
 
@@ -219,13 +222,14 @@ class LaneSimulation:
         return total_error
 
     def optimize_pid(self):
+
         """Optimize PID parameters."""
-        initial_guess = [0.1, 0.01, 0.05]
+        #initial_guess = [3.4, 1.67, 0.033] 
+        initial_guess = [1, 0.06, 0.16]
         bounds = [(0, 1), (0, 1), (0, 1)]  # Reasonable bounds for Kp, Ki, Kd
 
         result = minimize(self.pid_cost_function, initial_guess, bounds=bounds)
         self.best_pid_params = result.x
-        print(f"Optimized PID parameters: Kp={result.x[0]}, Ki={result.x[1]}, Kd={result.x[2]}")
 
     def reset_simulation(self):
         """Reset simulation state for PID optimization."""
@@ -254,6 +258,10 @@ class LaneSimulation:
             print("No joystick found! Using keyboard controls instead.")
 
         vertical_offset = 0
+        line_detected = False  # Track if the line is detected
+        # Font for alert message
+        font = pygame.font.Font(None, 36)  # Default font, size 36
+        alert_message = font.render("ALERT: EDGE LINE DETECTED", True, (255, 0, 0))  # Red text
 
         try:
             running = True
@@ -269,8 +277,11 @@ class LaneSimulation:
                 lateral_error, side = self.calculate_lateral_error(state)
                 pid_correction = 0
                 if lateral_error != 0:  # Activate PID only when wheels detect the line
+                    line_detected = True  # Line detected
                     Kp, Ki, Kd = self.best_pid_params
                     pid_correction = self.compute_pid_correction(Kp, Ki, Kd, lateral_error, 1 / self.FPS)
+                else:
+                    line_detected = False  # No line detected
 
                 if side == 'left':
                     state = self.update_car_state(joystick_value + pid_correction, state, dt=1 / self.FPS)
@@ -299,6 +310,10 @@ class LaneSimulation:
                 self.draw_environment(vertical_offset)
                 self.draw_car_sprite(car_image, state)
 
+                # Display alert message if line is detected
+                if line_detected:
+                    self.screen.blit(alert_message, (10, 10))  # Display message at (50, 50)
+
                 pygame.display.flip()
                 self.clock.tick(self.FPS)
         except Exception as e:
@@ -310,5 +325,7 @@ class LaneSimulation:
 if __name__ == "__main__":
     simulation = LaneSimulation()
     simulation.run_simulation()
+
+
 
 
