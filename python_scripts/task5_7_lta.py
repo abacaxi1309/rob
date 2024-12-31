@@ -3,6 +3,7 @@ from scipy.optimize import minimize
 import pygame
 import math
 import matplotlib.pyplot as plt
+import csv
 from task1_gamepad import gamepad_control
 from task2_car_model import kinematic_model_update, get_car_corners
 
@@ -263,6 +264,17 @@ class LaneSimulation:
         font = pygame.font.Font(None, 36)  # Default font, size 36
         alert_message = font.render("ALERT: EDGE LINE DETECTED", True, (255, 0, 0))  # Red text
 
+        # TASK 7
+        # Lists for data logging
+        log_time = []
+        log_joystick_value = []
+        log_lateral_error = []
+        log_pid_correction = []
+        log_x_position = []
+        log_y_position = []
+        log_theta = []
+
+
         try:
             running = True
             while running:
@@ -291,6 +303,18 @@ class LaneSimulation:
                     state = self.update_car_state(joystick_value, state, dt=1 / self.FPS)
 
                 x, _, _, _ = state
+
+                # TASK 7
+                # Saving the values to the lists
+                log_time.append(self.time_elapsed)
+                log_joystick_value.append(joystick_value)
+                log_lateral_error.append(lateral_error)
+                log_pid_correction.append(pid_correction)
+                log_x_position.append(x)
+                log_y_position.append(state[1])
+                log_theta.append(state[2])
+
+                # Append the values to the lists
                 self.positions_center.append(x)
                 self.times.append(self.time_elapsed)  # Add the current time to times
                 self.corners.append(get_car_corners(state, self.CAR_LENGTH, self.CAR_WIDTH))
@@ -321,6 +345,70 @@ class LaneSimulation:
         finally:
             pygame.quit()
             self.plot_results()
+
+            ##### TASK 7
+
+            # Plot of the lateral error and control inputs over
+            plt.figure(figsize=(16, 12))
+
+            # Subplot 1: Lateral error vs. time
+            plt.subplot(3, 1, 1)
+            plt.plot(log_time, log_lateral_error, label='Lateral Error', color='blue')
+            plt.axhline(0, color='red', linestyle='--', label='Center Line')
+            plt.xlabel('Time (s)')
+            plt.ylabel('Lateral Error')
+            plt.title('Lateral Error Over Time')
+            plt.legend()
+
+            # Subplot 2: Joystick input and PID correction vs. time
+            plt.subplot(3, 1, 2)
+            plt.plot(log_time, log_joystick_value, label='Joystick Input', color='green')
+            plt.plot(log_time, log_pid_correction, label='PID Correction', color='orange')
+            plt.xlabel('Time (s)')
+            plt.ylabel('Control Input')
+            plt.title('Joystick and PID Correction Over Time')
+            plt.legend()
+
+            # Subplot 3: Trajectory of the car with lanes
+            plt.subplot(3, 1, 3)
+
+            # Ajusting the y_position to be inverted
+            y_position_inverted = max(log_y_position) - log_y_position + min(log_y_position)
+
+            # Scatter plot with colormap
+            scatter = plt.scatter(log_x_position, y_position_inverted,  
+                                c=log_time,  
+                                cmap='viridis', 
+                                marker='o',
+                                s=30,
+                                label='Car Trajectory')
+
+            # Colorbar
+            plt.colorbar(scatter, label='Time (s)')
+
+            # Draw lane boundaries
+            road_center = self.SCREEN_WIDTH / 2
+            plt.axvline(x=self.inside_left_boundary, color='r', linestyle='--', label="Left Lane")
+            plt.axvline(x=self.inside_right_boundary, color='g', linestyle='--', label="Right Lane")
+            plt.axvline(x=road_center, color='red', linestyle='-', label='Center Line')
+
+            # Labels
+            plt.xlabel('Lateral Position')
+            plt.ylabel('Forward Position')
+            plt.title('Car Trajectory with Lane Boundaries')
+            plt.legend()
+            plt.tight_layout()
+            plt.show()
+
+            # Save the logged data to a file
+
+            with open('task7_log.csv', mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(['Time', 'Joystick Value', 'Lateral Error', 'PID Correction', 'X Position'])
+                for t, js, le, pc, x_pos in zip(log_time, log_joystick_value, log_lateral_error, log_pid_correction, log_x_position):
+                    writer.writerow([t, js, le, pc, x_pos])
+            
+            print("Data saved to task7_log.csv")
 
 if __name__ == "__main__":
     simulation = LaneSimulation()
