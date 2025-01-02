@@ -1,61 +1,99 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+% The line above is required to identify funding in the first footnote. If unneeded, please comment it out.
+
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage{amsmath}  % Pacote recomendado para expressões matemáticas avançadas
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
 \begin{document}
 
-\title{Paper Robotics\\ }
+\title{Revolutionizing Intralogistics: Autonomous Mobile Robots as a Key to Flexible and Adaptive Warehouse Automation}
 
 \author{
-\IEEEauthorblockN{  \emph{nº}}
-\IEEEauthorblockA{
-
-}
-\and
-\IEEEauthorblockN{Pedro Lopes  \emph{nº103194}}
-\IEEEauthorblockA{
-pedroafdlopes@tecnico.ulisboa.pt
-}
-\and
-\IEEEauthorblockN{  \emph{nº}}
-\IEEEauthorblockA{
-
-}
-
-\and
-\IEEEauthorblockN{Miguel Pereira  \emph{nº103254}}
-\IEEEauthorblockA{
-miguelquinapereira@tecnico.ulisboa.pt
-}
-
+\IEEEauthorblockN{José Pedro da Cunha Rodrigues (113234)\textsuperscript{1}, Vladimiro José de Medeiros Roque (98589)\textsuperscript{2}, \\
+Miguel Rodrigues Ferreira (113289)\textsuperscript{3}, Pedro Alexandre Ferreira Dias Lopes (103194)\textsuperscript{4}}
+\IEEEauthorblockA{Faculty of Electrical and Computer Engineering, Instituto Superior Técnico\\
+Emails: jose.p.rodrigues@tecnico.ulisboa.pt\textsuperscript{1}, vladimiro.roque@tecnico.ulisboa.pt\textsuperscript{2}, \\
+miguel.r.ferreira@tecnico.ulisboa.pt\textsuperscript{3}, pedroafdlopes@tecnico.ulisboa.pt\textsuperscript{4}}
 }
 
 \maketitle
 
 \begin{abstract}
-
+The increasing complexity of supply chain operations has accelerated the need for efficient and adaptive intralogistics solutions. Traditional systems such as Automated Guided Vehicles (AGVs) have served as reliable tools in structured environments, but their dependency on fixed paths and external guidance limits flexibility in dynamic contexts. Autonomous Mobile Robots (AMRs) emerge as a transformative technology, leveraging decentralized navigation, real-time mapping, and advanced sensors like Lidar to revolutionize warehouse automation. This paper provides a comprehensive review of AMR technology, focusing on its components, control strategies, and integration in intralogistics. Key challenges, including task optimization and collaborative systems, are discussed, alongside promising advances in algorithms and dynamic planning. By bridging theoretical models with real-world applications, this study highlights the potential of AMRs to redefine the future of warehouse logistics.
 \end{abstract}
 
+\vspace{10pt}
+\begin{IEEEkeywords}
+Autonomous Mobile Robots (AMRs), Automated Guided Vehicles (AGVs), Simultaneous Localization and Mapping (SLAM), Lidar Sensors, Intralogistics, Robot Operating System (ROS), Inventory Management, Path Planning, Obstacle Avoidance.
+\end{IEEEkeywords}
 
-\section{Introdução}
+\section{Introduction}
 
+\subsection*{\textbf{1.1 Context and Motivation}}
+The increasing complexity of supply chain operations, driven by globalization and the rise of e-commerce, has placed immense pressure on warehouse systems to enhance their operational efficiency. Automated systems have long been pivotal in intralogistics, where Automated Guided Vehicles (AGVs) dominated material handling for decades. AGVs, relying on predefined pathways and centralized controls, delivered significant value in structured environments. However, the rigid nature of these systems has become a bottleneck in today’s dynamic and rapidly evolving operational landscapes, particularly where adaptability and autonomy are paramount.
 
+Autonomous Mobile Robots (AMRs) have emerged as the next evolutionary step, addressing the limitations of AGVs. By leveraging technologies such as Simultaneous Localization and Mapping (SLAM), Lidar-based navigation, and artificial intelligence, AMRs transcend the constraints of traditional automation. Their decentralized decision-making and real-time adaptability mark a transformative shift in warehouse automation, empowering businesses to meet modern logistical challenges.
 
-\section{Conclusão}
+\subsection*{\textbf{1.2 Transition from AGVs to AMRs}}
+Since their introduction in the mid-20th century, AGVs have been characterized as reliable, fixed-path material handlers, capable of executing repetitive tasks with minimal human intervention. Their dependency on external infrastructure, such as magnetic tapes or embedded wires, has made them suitable for controlled settings but less adaptable to environments with dynamic layouts or variable tasks.
 
+AMRs, by contrast, represent a paradigm shift. Equipped with advanced sensory and computational capabilities, they navigate autonomously within unstructured environments. Technologies such as SLAM enable AMRs to create detailed maps of their surroundings, dynamically recalibrate their paths, and avoid obstacles without external guidance. This evolution has significantly reduced setup costs, increased operational flexibility, and unlocked new applications across industries, from manufacturing to healthcare and e-commerce.
 
-\begin{thebibliography}{00}
+\subsection*{\textbf{1.3} Objectives and Contributions}
+This paper aims to explore the technological evolution and impact of AMRs in modern intralogistics systems. The primary objectives are:
+\begin{itemize}
+    \item **Evaluate AGV navigation systems vs AMRs**: Comparing their methodologies, limitations, and applications in structured and dynamic environments.
+    \item **Explore technological advances**: Investigating how AMRs integrate advanced technologies like SLAM.
+    \item **Propose optimization frameworks**: Discussing novel algorithms for efficient task scheduling and collaborative operations in multi-robot environments.
+    \item **Assess kinematic modeling**: Highlighting the importance of mathematical models in trajectory planning and control for AMR efficiency.
+\end{itemize}
 
-\end{thebibliography}
+\subsection*{\textbf{1.4} Structure of the Paper}
+The remainder of this paper is structured as follows:
+\begin{itemize}
+    \item Section 2 reviews the technological evolution from AGVs to AMRs, focusing on their navigation systems and adaptability.
+    \item Section 3 explores technological advances in AMRs.
+    \item Section 4 discusses SLAM technology and its role in autonomous navigation and mapping.
+    \item Section 5 examines optimization algorithms for task scheduling and multi-robot coordination.
+    \item Section 6 addresses kinematics and mathematical of a AMR.
+    \item Finally, Section 7 summarizes the key findings and suggests future research directions.
+\end{itemize}
+
+\section{Technological Transition from AGVs to AMRs}
+
+\subsection*{\textbf{2.1 Navigation Systems in AGVs}}
+Automated Guided Vehicles (AGVs) rely on predefined pathways for navigation. These pathways are often determined through technologies such as wire guidance, magnetic tape, or optical sensors. Wire guidance involves embedding wires into the floor, which emit electrical signals detected by sensors on the AGV. Although effective, this approach is costly, requires substantial infrastructural changes, and lacks flexibility. Optical guidance offers an improvement by using markers or reflective strips, but it still relies heavily on environmental cues, limiting adaptability to dynamic changes.
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=0.43]{Images/guidance_system.png}}
+    \caption{Guidance systems AGVs vs AMRs (top view of the system).}
+    \label{fig}
+    \end{figure}
+
+\subsection*{\textbf{2.2 Limitations of AGV Technology}}
+While AGVs are adept at following strict routines in controlled environments, their inability to maneuver around unexpected obstacles significantly restricts their operational range. When faced with obstructions, AGVs typically halt until manual intervention clears the path. This dependency on predefined routes and lack of dynamic decision-making makes AGVs unsuitable for modern, flexible intralogistics systems.
+
+\subsection*{\textbf{2.3 Technological Advancements in AMRs}}
+Autonomous Mobile Robots (AMRs) eliminate the constraints of predefined pathways through advanced navigation systems. Utilizing technologies like Simultaneous Localization and Mapping (SLAM), Lidar, and 3D cameras, AMRs dynamically map their surroundings, detect obstacles, and calculate optimal routes in real-time. This ability to adapt to environmental changes without human intervention makes them ideal for dynamic and unpredictable operational settings.
+
+\begin{figure}[h]
+    \centerline{\includegraphics[scale=0.55]{Images/AGVvsAMR.png}}
+    \caption{Centralized and decentralized control systems in AGVs and AMRs.}
+    \label{fig}
+    \end{figure}
+
+\subsection*{\textbf{2.4 Comparative Analysis: AGVs vs AMRs}}
+The transition from AGVs to AMRs marks a significant evolution in intralogistics. While AGVs excel in repetitive, structured tasks, AMRs bring unprecedented flexibility and scalability. This flexibility is achieved through decentralized decision-making and advanced sensor integration, enabling AMRs to perform complex tasks like inventory management, collaborative operations with human workers, and navigating high-traffic areas efficiently.
 
 
 \end{document}
