@@ -95,6 +95,7 @@ Autonomous Mobile Robots (AMRs) eliminate the constraints of predefined pathways
 \subsection*{\textbf{2.4 Comparative Analysis: AGVs vs AMRs}}
 The transition from AGVs to AMRs marks a significant evolution in intralogistics. While AGVs excel in repetitive, structured tasks, AMRs bring unprecedented flexibility and scalability. This flexibility is achieved through decentralized decision-making and advanced sensor integration, enabling AMRs to perform complex tasks like inventory management, collaborative operations with human workers, and navigating high-traffic areas efficiently.
 
+<<<<<<< HEAD
 \section{Optimization in AMR Systems}
 
 \subsection*{\textbf{5.1 Decentralization of Control}}
@@ -164,5 +165,38 @@ As illustrated in Figure 3, decentralized traffic management not only enhances r
 
 
 
+=======
+\section{Technological Advances in AMRs}
+
+\subsection*{\textbf{3.1 Advanced Sensors and Navigation Systems}}
+To navigate autonomously and perceive their surroundings, Autonomous Mobile Robots (AMRs) depend on advanced sensory systems. LiDAR provides precision mapping and obstacle detection at considerable distances, while 3D cameras add a layer of environmental awareness by offering rich visual data for object identification. Inertial sensors further enhance navigation by supplying motion and orientation details, ensuring stability and adaptability during operations.
+
+The integration of these sensors through sophisticated fusion techniques allows AMRs to construct real-time maps and determine their precise location using Simultaneous Localization and Mapping (SLAM) \cite{1}. This multi-sensory approach equips AMRs to adapt seamlessly to changing environments, such as dynamic warehouse layouts, without requiring pre-installed navigation aids.
+
+\subsection*{\textbf{3.2 Hardware and Software Integration}}
+The evolution of specialized AI processors, such as the NVIDIA Orin series or equivalent advanced processors, has enabled AMRs to process large volumes of data locally, reducing dependence on centralized servers and improving real-time efficiency. 
+
+Advances in lithium-ion batteries have provided longer autonomy and shorter recharge times, which are crucial for continuous operations. Emerging technologies, such as wireless charging, are also being developed to eliminate downtime caused by traditional charging systems.
+
+\subsection*{\textbf{3.3 Decentralized Control and Collaboration}}
+Decentralization is a critical enabler of AMR flexibility, particularly in environments requiring real-time adaptability. By distributing decision-making processes across the fleet, AMRs can dynamically assign tasks, adapt routes, and coordinate operations without reliance on a central control unit. This approach enhances system resilience—if one robot encounters an issue, others can compensate without disrupting the entire workflow.
+
+In collaborative environments, decentralized control enables seamless interaction between AMRs, other robots, and human operators. For instance, in a high-traffic warehouse, AMRs can independently negotiate paths to avoid congestion, ensuring efficient task execution. This autonomy also supports scalability, as adding new robots does not significantly increase system complexity or create bottlenecks.
+
+Additionally, advanced algorithms, including reinforcement learning, have enhanced multi-robot collaboration, enabling fleets to optimize operations and avoid collisions in congested settings. Such decentralized strategies align with the demands of modern logistics, where adaptability and efficiency are paramount.
+
+\subsection*{\textbf{3.4 Emerging Technologies}}
+Edge computing has gained prominence, enabling local processing of complex tasks such as computer vision for real-time object identification. This transformation is particularly evident in settings where connectivity or latency challenges hinder centralized systems. For example, in warehouses with high data throughput, edge computing allows robots to analyze sensor inputs and make immediate decisions without waiting for remote server responses. This enhances efficiency in time-sensitive operations, such as collision avoidance or dynamic path planning.
+
+The future potential of edge computing lies in its scalability and adaptability. As AMRs become integral to industries beyond logistics—such as healthcare or disaster response—edge computing will support their autonomy in environments where reliable connectivity is unavailable. Furthermore, innovations in edge AI hardware will continue to expand the scope of on-board processing, enabling AMRs to undertake more complex tasks with minimal infrastructure dependencies.
+
+Other innovations include the use of genetic algorithms and swarm intelligence to coordinate large AMR fleets and the development of robotic manipulators that extend their capabilities beyond transport to assembly and item handling.
+
+\begin{thebibliography}{99}
+
+\bibitem{1} R. Keith and H. M. La, \textit{Review of Autonomous Mobile Robots for the Warehouse Environment}, Advanced Robotics and Automation Lab, University of Nevada, Reno, 2024.
+
+\end{thebibliography}
+>>>>>>> 12b6e47bd9e3de96742370713586e93e1d0857f0
 
 \end{document}
