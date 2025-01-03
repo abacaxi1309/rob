@@ -95,5 +95,74 @@ Autonomous Mobile Robots (AMRs) eliminate the constraints of predefined pathways
 \subsection*{\textbf{2.4 Comparative Analysis: AGVs vs AMRs}}
 The transition from AGVs to AMRs marks a significant evolution in intralogistics. While AGVs excel in repetitive, structured tasks, AMRs bring unprecedented flexibility and scalability. This flexibility is achieved through decentralized decision-making and advanced sensor integration, enabling AMRs to perform complex tasks like inventory management, collaborative operations with human workers, and navigating high-traffic areas efficiently.
 
+\section{Optimization in AMR Systems}
+
+\subsection*{\textbf{5.1 Decentralization of Control}}
+The transition from centralized to decentralized control marks a pivotal advancement in the optimization of Autonomous Mobile Robot (AMR) systems. Centralized systems, often utilized in Automated Guided Vehicle (AGV) operations, rely on a single decision-making unit, which can become a bottleneck in larger fleets. Decentralized systems, on the other hand, distribute decision-making among individual AMRs, allowing for improved scalability, flexibility, and fault tolerance.
+
+\subsection*{\textbf{5.2 Fleet Size and Configuration}}
+Optimization in AMR systems involves determining the appropriate fleet size and configuration to ensure a balance between operational efficiency and cost-effectiveness. Queueing theory provides a robust framework for modeling task arrival and processing dynamics in such systems.
+
+A typical AMR fleet can be represented as a queueing system, where tasks arrive at a rate \( \lambda \) and are processed at a rate \( \mu \). The system's state can be described using the following matrix:
+\[
+\mathbf{Q} = 
+\begin{bmatrix}
+\lambda_1 & \mu_1 \\
+\lambda_2 & \mu_2 \\
+\vdots & \vdots \\
+\lambda_N & \mu_N
+\end{bmatrix},
+\]
+where:
+\\
+\begin{itemize}
+    \item \( \lambda_i \): Task arrival rate for the \( i \)-th robot.
+    \item \( \mu_i \): Service rate for the \( i \)-th robot.
+\end{itemize}
+
+The system's stability is ensured if \( \lambda_i < \mu_i \) for all \( i \). 
+
+To optimize fleet size, we can formulate an objective function using summations over all robots in the fleet:
+\[
+\min \sum_{i=1}^{N} C_i x_i
+\]
+subject to:
+\[
+\sum_{i=1}^{N} a_{ij} x_i \geq b_j, \quad x_i \in \{0, 1\}, \forall i \in N,
+\]
+where:
+\begin{itemize}
+    \item \( C_i \): Cost of operating robot \( i \).
+    \item \( x_i \): Binary variable indicating whether robot \( i \) is active (\( x_i = 1 \)) or idle (\( x_i = 0 \)).
+    \item \( a_{ij} \): Capability of robot \( i \) to handle task \( j \).
+    \item \( b_j \): Task demand for \( j \).
+\end{itemize}
+
+Dynamic fleet-sizing algorithms leverage these metrics to adjust the active fleet size in real-time based on demand and workload distribution. This approach minimizes idle times and ensures resources are optimally utilized.
+
+\subsection*{\textbf{5.3 Task Scheduling and Resource Allocation}}
+One of the most critical areas of optimization in AMR systems is task scheduling and resource allocation. Advanced algorithms, including metaheuristics such as genetic algorithms and particle swarm optimization (PSO), are applied to solve complex scheduling problems in real-time.
+
+These algorithms aim to:
+\begin{itemize}
+    \item Minimize travel distances for task completion.
+    \item Balance workloads across the fleet to avoid bottlenecks.
+    \item Dynamically reallocate tasks in response to unexpected disruptions, such as robot failures or changes in priority.
+\end{itemize}
+
+\subsection*{\textbf{5.4 Optimization Algorithms for Traffic Management}}
+Traffic management is another crucial aspect, as congestion can significantly impact the efficiency of AMR systems. Algorithms like Dijkstra’s shortest path, A* (A-star), and reinforcement learning-based approaches are employed to optimize routing and prevent deadlocks in high-density environments.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{Images/CentralizedvsDecentralized.png}
+    \caption{Comparison of centralized and decentralized control in AMR systems.}
+    \label{fig:centralized-vs-decentralized}
+\end{figure}
+
+As illustrated in Figure 3, decentralized traffic management not only enhances routing efficiency but also reduces computational overhead, enabling AMRs to operate seamlessly in large-scale operations.
+
+
+
 
 \end{document}
