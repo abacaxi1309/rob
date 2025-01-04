@@ -137,6 +137,36 @@
 
 \section{Tasks}
 
+\subsection{Task 3: Manual Control of the Car Within Lane Boundaries}
+
+In this task, a lane with predefined boundaries was simulated, and the car was manually controlled using a joystick. The initial position of the car was set in the center of the lane.
+
+To validate the results:
+\begin{itemize}
+    \item A \textbf{screenshot} of the simulation environment was taken, Figure~\ref{fig:simulation}.
+    \item The car \textbf{lateral position} relative to the limits of the lane was plotted over time, Figure~\ref{fig:task3_results}.
+    \item The \textbf{joystick inputs} used to control the car were also plotted over time, Figure~\ref{fig:task3_results}.
+\end{itemize}
+
+
+Figure~\ref{fig:simulation} shows the simulation environment, where the car remained inside the lane during the experiment.
+
+Figure~\ref{fig:task3_results} shows that the position of the car remained within the lane limits (red and green dashed lines) throughout the simulation. The center position of the car (blue line) remained within the limits, showing the effectiveness of manual control. The lower subplot shows the joystick inputs applied over time. These inputs correspond to the manual adjustments made by the user to keep the car within the lane, confirming that the car can be effectively controlled using the joystick, staying within the lane limits as required by Task 3.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{task_3/simulation_task3.jpeg}
+    \caption{Simulation environment showing the car within the lane.}
+    \label{fig:simulation}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{task_3/task3.png}
+    \caption{The upper subplot shows the car position over time, while the lower subplot shows the joystick inputs used for manual control.}
+    \label{fig:task3_results}
+\end{figure}
+
 % ----------------------------------------------------------------------
 % ----------------------------------------------------------------------
 % Conclusão
