@@ -41,6 +41,7 @@ class LaneSimulation:
         self.positions_center = []
         self.corners = []
         self.times = []
+        self.joystick_inputs = []
 
         # Time tracking
         self.time_elapsed = 0
@@ -110,6 +111,41 @@ class LaneSimulation:
         self.screen.blit(rotated_image, new_rect.topleft)
 
     # Plot results
+    def plot_task3_results(self):
+        """Plot the car's position and joystick inputs over time after the simulation ends."""
+        # Gráfico da posição do carro
+        plt.figure(figsize=(12, 6))
+
+        # Subplot 1: Posição do carro
+        plt.subplot(2, 1, 1)
+        plt.axhline(y=self.inside_left_boundary, color='r', linestyle='--', label="Left Lane")
+        plt.axhline(y=self.inside_right_boundary, color='g', linestyle='--', label="Right Lane")
+        plt.plot(self.times, self.positions_center, label="Car Center Position", color='blue')
+        plt.fill_between(
+            self.times, self.inside_right_boundary, self.inside_left_boundary, color="gray", alpha=0.2, label="Lane Area"
+        )
+        plt.title("Car Position Over Time")
+        plt.xlabel("Time (s)")
+        plt.ylabel("Lateral Position (pixels)")
+        plt.legend()
+        plt.grid()
+        plt.gca().invert_yaxis()
+
+        # Subplot 2: Inputs do joystick
+        plt.subplot(2, 1, 2)
+        plt.plot(self.times, self.joystick_inputs, label="Joystick Input", color='purple')
+        plt.axhline(0, color='black', linestyle='--', label="Neutral Position")
+        plt.title("Joystick Inputs Over Time")
+        plt.xlabel("Time (s)")
+        plt.ylabel("Input Value")
+        plt.legend()
+        plt.grid()
+        plt.gca().invert_yaxis()
+
+        plt.tight_layout()
+        plt.show()
+
+
     def plot_results(self):
         """Plot the car's position over time after the simulation ends."""
 
@@ -195,6 +231,7 @@ class LaneSimulation:
 
                 # Get joystick input
                 joystick_value = gamepad_control(joystick)
+                self.joystick_inputs.append(joystick_value)
                 
                 # Update car state using kinematics
                 state = self.update_car_state(joystick_value, state, dt=1 / self.FPS)
@@ -226,6 +263,7 @@ class LaneSimulation:
             print(f"Error: {e}")
         finally:
             pygame.quit()
+            self.plot_task3_results()
             self.plot_results()
 
 if __name__ == "__main__":
