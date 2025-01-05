@@ -75,7 +75,7 @@
     \textsc{\Huge Robotics}\\[2.5cm]
     \textsc{\LARGE MEEC}\\[2.0cm]
     \HRule\\[0.4cm]
-    {\large \bf {\fontfamily{cmss}\selectfont Orientation Estimation and Trajectory Analysis Using Sensor Data}}\\[0.2cm]
+    {\large \bf {\fontfamily{cmss}\selectfont Advanced Driver Assistance Systems: Simulating Lane Tracing Assist}}\\[0.2cm]
     \HRule\\[1.5cm]
 \end{center}
 
@@ -128,14 +128,165 @@
 % ----------------------------------------------------------------------
 \section{Group Members Contribution} 
 
+\begin{itemize}
+    \item \textbf{Task 1:} José Rodrigues
+    \item  \textbf{Task 2:} Miguel Ferreira
+    \item  \textbf{Task 3:} Vladimiro Roque
+    \item  \textbf{Task 4:} Miguel Ferreira
+    \item  \textbf{Task 5:} José Rodrigues
+    \item  \textbf{Task 6:} Pedro Lopes
+    \item  \textbf{Task 7:} Vladimiro Roque
+\end{itemize}
+
 
 \section{Introduction} 
 
+This report presents the activities carried out during the second laboratory of the Robotics course. The main objective of this lab was to apply the concepts of kinematics, dynamics, and control studied in theoretical classes to the development and simulation of a Lane-Tracking Assist (LTA) system, a functionality commonly found in modern vehicles.
 
+The simulation focused on a scenario where a car is driven on a highway with lanes clearly marked by white lines. The goal of the LTA system is to automatically correct the vehicle's steering, ensuring it stays within the designated lane. This system is activated whenever the vehicle is about to cross the boundary lines, adjusting the steering to prevent lane departure. The implementation involved fundamental steps, including modeling the car, developing controls for the LTA system, and demonstrating its effectiveness through simulations.
+
+The results obtained are discussed in this report, with detailed explanations of the techniques employed, data analysis, and evaluation of the proposed system's performance.
 
 \newpage
 
 \section{Tasks}
+
+\subsection{Task 1 - Development of a Joystick-like Control Function}
+
+To address Task 1, a function was implemented to simulate the manual steering control of a vehicle using either a gamepad or keyboard inputs. The function leverages the Pygame library to capture input from the user and translate it into steering actions, which are essential for controlling the simulated vehicle.
+
+\subsection*{Implementation Details}
+
+\begin{itemize}
+    \item \textbf{Keyboard Input:}
+    \begin{itemize}
+        \item Continuous input from the left and right arrow keys (\texttt{K\_LEFT} and \texttt{K\_RIGHT}) is captured to determine the steering direction.
+        \item Pressing the left arrow steers the car fully to the left (steering value: \texttt{-1}), while pressing the right arrow steers it fully to the right (steering value: \texttt{1}). If no key is pressed, the steering remains neutral (steering value: \texttt{0}).
+    \end{itemize}
+    
+    \item \textbf{Gamepad Input:}
+    \begin{itemize}
+        \item When a gamepad is connected, the function reads the horizontal axis (\texttt{Axis 0}) of the joystick to determine the steering direction and intensity.
+        \item The joystick input produces a continuous range of values, reflecting the precise position of the joystick. A dead zone filter (\texttt{> 0.1}) is applied to ignore minor unintentional movements.
+        \item The returned steering value directly corresponds to the joystick's horizontal axis position, ranging from \texttt{-1} (full left) to \texttt{1} (full right).
+    \end{itemize}
+    
+    \item \textbf{Output:}
+    \begin{itemize}
+        \item For keyboard input, the function outputs discrete values: 
+        \begin{itemize}
+            \item \texttt{-1} for left,
+            \item \texttt{1} for right,
+            \item \texttt{0} for neutral.
+        \end{itemize}
+        \item For gamepad input, the function outputs continuous values corresponding to the joystick's position.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Purpose and Functionality}
+
+This implementation provides intuitive and responsive steering control for the simulated vehicle. By combining discrete keyboard inputs with the precision of gamepad analog inputs, the system offers flexibility and adaptability for different control preferences, enabling users to effectively interact with the simulation environment.
+
+\subsection{Task 2 -  Car Model}
+
+The kinematic model of the car robot, Figure \ref{fig:ModelCar.png} illustrates a visual representation of the car robot.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Imagens/ModelCar.png}
+    \caption{Kinematic model of the car robot}
+    \label{fig:ModelCar.png}
+\end{figure}
+
+The kinematic model of the car robot, shown in Figure \ref{fig:ModelCar.png}, describes the robot's motion in the $xOy$ plane. The velocity components along the $x$ and $y$ axes can be expressed as:
+
+\[
+\dot{x} = v_r \cos(\theta)
+\]
+\[
+\dot{y} = v_r \sin(\theta)
+\]
+
+Where $v_r$ is the robot's linear velocity and $\theta$ is its orientation angle. These equations assume no wheel slip and that the robot operates in the plane without roll or pitch.
+
+The angular velocity $\dot{\theta}$ is related to the robot's linear velocity by:
+
+\[
+\dot{\theta} = \omega = \frac{v_r}{R}
+\]
+
+Where $R$ is the distance from the reference point to the center of rotation given by:
+
+\[
+R = \frac{L}{\tan(\phi)}
+\]
+
+Thus, the rate of change of the orientation is:
+
+\[
+\dot{\theta} = \frac{v_r \sin(\phi)}{L}
+\]
+
+The velocity component of the steering is modeled as:
+
+\[
+v_r = V \cos(\phi)
+\]
+
+Where $V$ is the linear velocity of the robot and $\phi$ is the steering angle. Combining these equations, we obtain the following system describing the robot’s motion:
+
+\[
+\dot{x} = V \cos(\theta) \cos(\phi)
+\]
+\[
+\dot{y} = V \sin(\theta) \cos(\phi)
+\]
+\[
+\dot{\theta} = \frac{V \sin(\phi)}{L}
+\]
+
+The steering angle dynamics are given by:
+
+\[
+\dot{\phi} = \omega_s
+\]
+
+Where $\omega_s$ is the angular velocity of the steering wheel. This model provides a simplified yet effective representation of the robot's motion.
+
+
+The kinematic model for a car robot can be represented using the following state-space equations:
+\[
+\begin{bmatrix}
+\dot{x} \\
+\dot{y} \\
+\dot{\theta} \\
+\dot{\phi}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos(\theta)\cos(\phi) & 0 \\
+\sin(\theta)\cos(\phi) & 0 \\
+\frac{\sin(\phi)}{L} & 0 \\
+0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+V \\
+\omega_s
+\end{bmatrix}
+\]
+To better approximate the effects of a real car, we limited $\phi$ to the interval:
+\[
+\phi \in \left[-\frac{\pi}{4}, \frac{\pi}{4}\right]
+\]
+This ensures that the steering angle remains within realistic physical constraints.
+
+\subsubsection{Dynamic model for a Car Robot}
+
+Generally, the kinematics car model is suitable for trajectory planning at lower speed, however at high-speed scenarios, this prediction model will become unreliable, due to the rise of tire sideslip angles. Therefore, it is necessary to investigate the vehicle dynamics and tire side-slip characteristics for improving the controller performance. A dynamic model incorporates the forces and torques acting on the robot, providing a more accurate representation of its motion.
+
+For this lab, we used the kinematic model due to its simplicity. However, exploring dynamics models is critical for applications like LTA system.
+
+\newpage
 
 \subsection{Task 3: Manual Control of the Car Within Lane Boundaries}
 
@@ -155,17 +306,126 @@ Figure~\ref{fig:task3_results} shows that the position of the car remained withi
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{task_3/simulation_task3.jpeg}
+    \includegraphics[width=0.5\textwidth]{Imagens/simulation_task3.jpeg}
     \caption{Simulation environment showing the car within the lane.}
     \label{fig:simulation}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{task_3/task3.png}
+    \includegraphics[width=1\textwidth]{Imagens/task3.png}
     \caption{The upper subplot shows the car position over time, while the lower subplot shows the joystick inputs used for manual control.}
     \label{fig:task3_results}
 \end{figure}
+
+\subsection{Task 4 - Lane Detection}
+
+The detection of the left and right white lines of the lane was implemented as a key component of the LTA system. To accurately determine whether the car detects these lines, it was necessary to calculate the coordinates of the car's corners, mainly the coordinates of the front corners of the car as these are essential for detecting whether there was a collision.
+\subsubsection{Car corners coordinates}
+To compute the corners, we used the following equations:
+
+\subsubsection*{Front Axle Center Calculation}  
+
+Similarly, the front axle center is computed by moving half the car's length forward along its orientation \(\theta\):  
+\[
+\text{Front}_x = x + \frac{\text{Car Length}}{2} \cdot \cos(\theta)
+\]  
+\[
+\text{Front}_y = y + \frac{\text{Car Length}}{2} \cdot \sin(\theta)
+\]
+
+where:  
+
+- \(x\) and \(y\) define the center position of the car,  
+
+- \(\theta\) represents the orientation (heading angle) of the car.
+
+\subsubsection*{Front Corner Calculations}
+
+The coordinates of the front corners of the car can be derived from the front axle center \((\text{Front}_x, \text{Front}_y)\) and the car's width.
+
+\subsubsection*{Front Left Corner Calculation}
+
+For the front left corner, the coordinates are determined by moving half the car's width in a direction perpendicular to the car's orientation \(\theta\). This is calculated as:
+
+\[
+\text{Front Left Corner}_x = \text{Front}_x + \frac{\text{Car Width}}{2} \cdot \sin(\theta)
+\]
+\[
+\text{Front Left Corner}_y = \text{Front}_y - \frac{\text{Car Width}}{2} \cdot \cos(\theta)
+\]
+
+\subsubsection*{Front Right Corner Calculation}
+
+Similarly, for the front right corner, the coordinates are calculated by moving half the car's width in the opposite direction perpendicular to the car's orientation:
+
+\[
+\text{Front right Corner}_x = \text{Front}_x - \frac{\text{Car Width}}{2} \cdot \sin(\theta)
+\]
+\[
+\text{Front right Corner}_y = \text{Front}_y + \frac{\text{Car Width}}{2} \cdot \cos(\theta)
+\]
+
+In these equations, the sine and cosine terms adjust the position of the corners based on the orientation \(\theta\) of the car, ensuring they are correctly placed relative to the front axle center. These equations are derived from the fact that the initial orientation \(\theta\) is \(-\frac{\pi}{2}\), which aligns the car’s orientation along the negative \(y\)-axis, affecting the direction of the perpendicular components.
+
+
+
+
+
+
+\subsubsection{Car Detection plots}
+
+To detect collisions with the road boundaries in the simulation, we used the coordinates of the car's front corners, calculated at each time step. At every iteration At every iteration of the simulation, the front-left corner and front-right corner coordinates were compared to the road boundaries.Whenever the x-coordinate of the front-left or front-right corner crossed the left or right lane line, respectively, a collision detection was logged.
+
+To visualize the detections of the lane, we create two types of plots:
+
+\begin{itemize}
+    \item \textbf{2D Trajectory Plot:} This plot shows the \(x\) and \(y\) coordinates of the car’s front corners over time, highlighting the collisions with markers. It provides a spatial representation of the car’s movement and its interactions with the lane boundaries.
+    
+    \begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagens/Nodetectionxy.jpg}
+        \caption{X and Y coordinates without detection.}
+        \label{fig:figura1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagens/Detectionxy.jpg}
+        \caption{X and Y coordinates with detection.}
+        \label{fig:figura2}
+    \end{subfigure}
+    \caption{X and Y coordinates of front car corners with and without detection.}
+    \label{fig:figuras_lado_a_lado}
+    \end{figure}
+
+    \vspace{0.2cm}  % Espaço entre as figuras e o próximo texto
+    \newpage
+    \item \textbf{Time-Based Plot:} This plot shows the \(x\)-coordinates of the front corners as a function of time. It helps visualize when and where the collisions occurred, offering a temporal perspective of the boundary crossings.
+    
+    \begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagens/Nodetectionx.jpg}
+        \caption{X coordinate over time without detection.}
+        \label{fig:figura1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagens/Detectionx.jpg}
+        \caption{X coordinate over time with detection.}
+        \label{fig:figura2}
+    \end{subfigure}
+    \caption{X coordinate of front car corners over time with and without detection.}
+    \label{fig:figuras_lado_a_lado}
+    \end{figure}
+
+\end{itemize}
+These plots clearly demonstrate the successful detection of the left and right lane boundaries over time.
 
 % ----------------------------------------------------------------------
 % ----------------------------------------------------------------------
