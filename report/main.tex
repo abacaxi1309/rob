@@ -427,12 +427,52 @@ To visualize the detections of the lane, we create two types of plots:
 \end{itemize}
 These plots clearly demonstrate the successful detection of the left and right lane boundaries over time.
 
+\subsection{Task 7: Validation of the LTA System}
+
+The lateral error, representing the deviation of the car center from the middle of the lane, was monitored throughout the simulation. The error was minimized by the LTA system using a PID controller.
+
+Figure~\ref{fig:lateral_error} shows the evolution of the lateral error over time. Positive and negative values represent deviations to the left and right, respectively. The LTA system successfully reduced these deviations, as shown in Figure~\ref{fig:control_inputs}, the joystick input (green) represents user-induced steering errors, while the PID correction (orange) illustrates the system response. When the user attempts to steer the car outside the lane boundaries, the PID controller applies corrective actions to counteract these deviations. This interaction demonstrates how the LTA system combines manual inputs and automated assistance to maintain lane adherence effectively.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{task_7/lateralerror.png}
+    \caption{Lateral error over time. Positive values indicate left deviations, while negative values indicate right deviations. The LTA system effectively minimized these deviations.}
+    \label{fig:lateral_error}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{task_7/joystickvspid.png}
+    \caption{Control inputs over time. Joystick inputs (green) are corrected by the LTA system using PID control (orange).}
+    \label{fig:control_inputs}
+\end{figure}
+
+The trajectory of the car is presented in Figure~\ref{fig:car_trajectory}, highlighting the car movement along the lane. The system consistently kept the car within the lane boundaries, even when we forced inputs to steer it out of the lane (indicated by the red and green dashed lines). The color gradient in Figure~\ref{fig:car_trajectory} represents the simulation time, allowing for the visualization of both spatial and temporal aspects of the car movement. This highlights the consistency of the system's control throughout the entire simulation period.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{task_7/car_trajectory_analysis.png}
+    \caption{Car trajectory along the lane. The car remained within the boundaries throughout the simulation, with deviations corrected by the LTA system.}
+    \label{fig:car_trajectory}
+\end{figure}
+
+The following metrics were used to evaluate the system performance, providing insight into its responsiveness, effectiveness, and control dynamics:
+\begin{itemize}
+    \item \textbf{Average Response Time:} 2.69 seconds - the average time taken by the system to detect and correct a deviation from the lane center.
+    \item \textbf{Number of Corrections:} 2 interventions - the total number of successful corrections made when the car approached the lane boundaries during this simulation.
+    \item \textbf{Correction Success Rate:} 100\% - all detected deviations were successfully corrected by the system during this simulation.
+    \item \textbf{Maximum PID Correction:} 54.43 rad/s - the highest steering rate correction applied by the PID controller to maintain the car within the lane boundaries.
+    \item \textbf{Mean PID Correction:} 8.83 rad/s - indicating that most steering corrections were moderate and well-controlled.
+    \item \textbf{Maximum Joystick Input:} 1.00 (normalized) - the largest normalized steering input provided by the user during the simulation, where -1.0 represents a maximum left turn and +1.0 a maximum right turn.
+\end{itemize}
+
+
 % ----------------------------------------------------------------------
 % ----------------------------------------------------------------------
 % Conclusão
 % ----------------------------------------------------------------------
 \section{Conclusion}
-
+The LTA system successfully demonstrated its capability to correct steering errors and maintain the car within the lane boundaries under simulated conditions. The PID controller was effective in minimizing lateral error and responding to user-induced deviations, as evidenced by the 100\% correction success rate and the car's consistent adherence to the lane boundaries.
 
 
 \end{document}
