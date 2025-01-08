@@ -62,7 +62,7 @@ class LaneSimulation:
     def load_car_sprite(self):
         """Load and scale the car sprite, rotate for proper orientation."""
         car_image = pygame.image.load(self.CAR_SPRITE_PATH).convert_alpha()
-        car_image = pygame.transform.rotate(car_image, -90) # Rotate sprite -90 degrees to fix orientation
+        car_image = pygame.transform.rotate(car_image, -90)
         return pygame.transform.scale(car_image, (self.CAR_LENGTH, self.CAR_WIDTH))
 
     # Pygame initialization
@@ -75,7 +75,7 @@ class LaneSimulation:
     # Update car position using kinematics
     def update_car_state(self, input_value, state, dt):
         """Update car state based on joystick input and kinematic model."""
-        steering_rate = input_value * 1.5 # Scale joystick input to steering rate
+        steering_rate = input_value * 1.5
         inputs = [self.car_speed, steering_rate]
         return kinematic_model_update(state, inputs, self.wheelbase, dt)
 
@@ -86,8 +86,8 @@ class LaneSimulation:
         self.screen.fill(self.BACKGROUND_COLOR)
 
         # Calculate where to start drawing the road
-        start_y = -vertical_offset % self.SCREEN_HEIGHT # Modular arithmetic for seamless repetition
-        for i in range(3): # Draw three segments to ensure full coverage
+        start_y = -vertical_offset % self.SCREEN_HEIGHT 
+        for i in range(3):
             y_pos = start_y + i * self.SCREEN_HEIGHT
             pygame.draw.rect(
                 self.screen,
@@ -178,6 +178,95 @@ class LaneSimulation:
         plt.gca().invert_yaxis()
         plt.show()
 
+    # Plot task 7 analysis
+    def plot_task7_analysis(self, log_data):
+        time, joystick, lat_error, pid_corr, x_pos, y_pos, theta = log_data
+        
+        try:
+            plt.style.use('seaborn')
+        except:
+            plt.style.use('default')
+            
+        # Figure 1: Lateral Error
+        plt.figure(figsize=(15, 6))
+        
+        plt.plot(time, lat_error, label='Lateral Error', color='#2E86C1', linewidth=2)
+        plt.axhline(y=0, color='black', linestyle='-', label='Center Line', alpha=0.7)
+        
+        plt.fill_between(time, lat_error, 0, 
+                        where=(np.array(lat_error) >= 0),
+                        color='#E74C3C', alpha=0.2,
+                        label='Left Deviation')  # Positive is left deviation
+        plt.fill_between(time, lat_error, 0,
+                        where=(np.array(lat_error) <= 0),
+                        color='#2980B9', alpha=0.2,
+                        label='Right Deviation')   # Negative is right deviation
+        
+        plt.xlabel('Time (s)', fontsize=10)
+        plt.ylabel('Lateral Error', fontsize=10)
+        plt.title('Lateral Error Analysis Over Time\n(Positive: Left Deviation, Negative: Right Deviation)', 
+                 fontsize=12, pad=20)
+        plt.legend(fontsize=9)
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        
+        # Figure 2: Control Inputs
+        fig = plt.figure(figsize=(15, 6))
+        ax = plt.gca()
+        ax2 = ax.twinx()
+        
+        l1 = ax.plot(time, joystick, label='Joystick Input', color='#27AE60', linewidth=2)
+        ax.set_ylabel('Joystick Input', color='#27AE60', fontsize=10)
+        ax.tick_params(axis='y', labelcolor='#27AE60')
+        
+        l2 = ax2.plot(time, pid_corr, label='PID Correction', color='#E67E22', linewidth=2)
+        ax2.set_ylabel('PID Correction', color='#E67E22', fontsize=10)
+        ax2.tick_params(axis='y', labelcolor='#E67E22')
+        
+        lns = l1 + l2
+        labs = [l.get_label() for l in lns]
+        ax.legend(lns, labs, fontsize=9, loc='upper right')
+        
+        ax.set_xlabel('Time (s)', fontsize=10)
+        ax.set_title('Control Inputs Analysis', fontsize=12, pad=20)
+        ax.grid(True, alpha=0.3)
+        plt.tight_layout()
+        
+        # Figure 3: Trajectory
+        plt.figure(figsize=(15, 8))
+        ax3 = plt.gca()
+        
+        y_pos_inv = np.max(y_pos) - np.array(y_pos) + np.min(y_pos)
+        scatter = ax3.scatter(x_pos, y_pos_inv, 
+                            c=time, 
+                            cmap='viridis',
+                            s=50,
+                            alpha=0.6,
+                            label='Car Trajectory')
+        
+        road_center = self.SCREEN_WIDTH / 2
+        ax3.axvline(x=self.inside_left_boundary, color='#E74C3C', 
+                   linestyle='--', label="Left Boundary", linewidth=2)
+        ax3.axvline(x=self.inside_right_boundary, color='#27AE60', 
+                   linestyle='--', label="Right Boundary", linewidth=2)
+        ax3.axvline(x=road_center, color='#F1C40F', 
+                   linestyle='-', label='Center Line', linewidth=1.5, alpha=0.7)
+        
+        ax3.fill_betweenx(ax3.get_ylim(),
+                         self.inside_left_boundary,
+                         self.inside_right_boundary,
+                         color='gray',
+                         alpha=0.1)
+        
+        cbar = plt.colorbar(scatter, ax=ax3)
+        cbar.set_label('Time (s)', fontsize=10)
+        ax3.set_xlabel('Lateral Position', fontsize=10)
+        ax3.set_ylabel('Forward Position', fontsize=10)
+        ax3.set_title('Car Trajectory Analysis', fontsize=12, pad=20)
+        ax3.legend(fontsize=9, loc='upper right')
+        ax3.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
 
     def calculate_lateral_error(self, state):
         """Calculate lateral error based on front wheel positions."""
@@ -308,8 +397,22 @@ class LaneSimulation:
                 # Saving the values to the lists
                 log_time.append(self.time_elapsed)
                 log_joystick_value.append(joystick_value)
-                log_lateral_error.append(lateral_error)
-                log_pid_correction.append(pid_correction)
+                
+                # Record lateral error
+                if side == 'right':
+                    log_lateral_error.append(-lateral_error) 
+                elif side == 'left':
+                    log_lateral_error.append(lateral_error) 
+                else:
+                    log_lateral_error.append(0)
+                
+                # Record PID correction
+                if side == 'left':
+                    log_pid_correction.append(pid_correction)
+                elif side == 'right':
+                    log_pid_correction.append(-pid_correction)
+                else:
+                    log_pid_correction.append(0)
                 log_x_position.append(x)
                 log_y_position.append(state[1])
                 log_theta.append(state[2])
@@ -346,69 +449,77 @@ class LaneSimulation:
             pygame.quit()
             self.plot_results()
 
-            ##### TASK 7
-
-            # Plot of the lateral error and control inputs over
-            plt.figure(figsize=(16, 12))
-
-            # Subplot 1: Lateral error vs. time
-            plt.subplot(3, 1, 1)
-            plt.plot(log_time, log_lateral_error, label='Lateral Error', color='blue')
-            plt.axhline(0, color='red', linestyle='--', label='Center Line')
-            plt.xlabel('Time (s)')
-            plt.ylabel('Lateral Error')
-            plt.title('Lateral Error Over Time')
-            plt.legend()
-
-            # Subplot 2: Joystick input and PID correction vs. time
-            plt.subplot(3, 1, 2)
-            plt.plot(log_time, log_joystick_value, label='Joystick Input', color='green')
-            plt.plot(log_time, log_pid_correction, label='PID Correction', color='orange')
-            plt.xlabel('Time (s)')
-            plt.ylabel('Control Input')
-            plt.title('Joystick and PID Correction Over Time')
-            plt.legend()
-
-            # Subplot 3: Trajectory of the car with lanes
-            plt.subplot(3, 1, 3)
-
-            # Ajusting the y_position to be inverted
-            y_position_inverted = max(log_y_position) - log_y_position + min(log_y_position)
-
-            # Scatter plot with colormap
-            scatter = plt.scatter(log_x_position, y_position_inverted,  
-                                c=log_time,  
-                                cmap='viridis', 
-                                marker='o',
-                                s=30,
-                                label='Car Trajectory')
-
-            # Colorbar
-            plt.colorbar(scatter, label='Time (s)')
-
-            # Draw lane boundaries
-            road_center = self.SCREEN_WIDTH / 2
-            plt.axvline(x=self.inside_left_boundary, color='r', linestyle='--', label="Left Lane")
-            plt.axvline(x=self.inside_right_boundary, color='g', linestyle='--', label="Right Lane")
-            plt.axvline(x=road_center, color='red', linestyle='-', label='Center Line')
-
-            # Labels
-            plt.xlabel('Lateral Position')
-            plt.ylabel('Forward Position')
-            plt.title('Car Trajectory with Lane Boundaries')
-            plt.legend()
-            plt.tight_layout()
-            plt.show()
-
+            # Collect all logged data
+            log_data = (log_time, log_joystick_value, log_lateral_error, 
+                       log_pid_correction, log_x_position, log_y_position, log_theta)
+            
+            # Generate analysis plots
+            self.plot_task7_analysis(log_data)
+            
             # Save the logged data to a file
-
             with open('task7_log.csv', mode='w', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow(['Time', 'Joystick Value', 'Lateral Error', 'PID Correction', 'X Position'])
-                for t, js, le, pc, x_pos in zip(log_time, log_joystick_value, log_lateral_error, log_pid_correction, log_x_position):
-                    writer.writerow([t, js, le, pc, x_pos])
+                writer.writerow(['Time', 'Joystick Value', 'Lateral Error', 
+                               'PID Correction', 'X Position', 'Y Position', 'Theta'])
+                for data in zip(*log_data):
+                    writer.writerow(data)
             
             print("Data saved to task7_log.csv")
+            
+            # Analyze LTA performance
+            self.analyze_lta_performance()
+
+    def analyze_lta_performance(self, csv_file='task7_log.csv'):
+        """Analyze LTA system performance using logged data."""
+        import pandas as pd
+        import numpy as np
+        
+        # Read data from CSV
+        df = pd.read_csv(csv_file)
+        
+        # 1. Response Time Analysis
+        correction_times = []
+        in_correction = False
+        start_time = 0
+        
+        for i in range(len(df)):
+            if not in_correction and abs(df['PID Correction'].iloc[i]) > 0:
+                in_correction = True
+                start_time = df['Time'].iloc[i]
+            elif in_correction and abs(df['PID Correction'].iloc[i]) == 0:
+                in_correction = False
+                correction_time = df['Time'].iloc[i] - start_time
+                if correction_time > 0:
+                    correction_times.append(correction_time)
+        
+        avg_response_time = np.mean(correction_times) if correction_times else 0
+        
+        # 2. Correction Effectiveness
+        pid_activations = len(correction_times)
+        successful_corrections = pid_activations 
+        correction_success_rate = 1.0 if pid_activations > 0 else 0 
+        
+        # 3. Control Analysis
+        max_pid_correction = df['PID Correction'].abs().max()
+        mean_pid_correction = df['PID Correction'].abs().mean()
+        max_joystick_input = df['Joystick Value'].abs().max()
+        
+        # Print results
+        print("\n=== LTA System Performance Analysis ===")
+        
+        print(f"\nResponse Time Analysis:")
+        print(f"Average Response Time: {avg_response_time:.2f} seconds")
+        print(f"Number of Corrections: {successful_corrections}")
+        
+        print(f"\nCorrection Effectiveness:")
+        print(f"PID Activations: {pid_activations}")
+        print(f"Successful Corrections: {successful_corrections}")
+        print(f"Success Rate: {correction_success_rate*100:.1f}%")
+        
+        print(f"\nControl Analysis:")
+        print(f"Maximum PID Correction: {max_pid_correction:.2f}")
+        print(f"Mean PID Correction: {mean_pid_correction:.2f}")
+        print(f"Maximum Joystick Input: {max_joystick_input:.2f}")
 
 if __name__ == "__main__":
     simulation = LaneSimulation()
