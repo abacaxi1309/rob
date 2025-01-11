@@ -24,6 +24,10 @@ If Python 3.9+ is not installed, follow these steps:
         "python --version"
 
 3. Preparing the Environment:
+
+   - Place all project files in the same directory.
+      Note: Ensure the car sprite image (tesla-birdview.png) is in the same directory as the python scripts.
+
    - Update Pip (optional but recommended):
      Run the following command to ensure pip is up-to-date:
      "python3 -m pip install --upgrade pip"
