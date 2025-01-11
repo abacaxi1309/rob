@@ -9,15 +9,30 @@ This project simulates a Lane Keeping Assistance (LTA) system for a vehicle driv
 - Keyboard or Joystick (tested with a PlayStation gamepad, but most wired controllers should work!)
 
 
-2. Instructions:
-Place all project files in the same directory.
-Note: Ensure the car sprite image (tesla-birdview.png) is in the same directory as the main scripts.
+2. Setting Up Python:
+If Python 3.9+ is not installed, follow these steps:
 
-Install dependencies using the "requirements.txt" file. Run the following command in the terminal:
-   python3 -m pip install -r requirements.txt
+   - macOS/Linux:
+     1. Check if Python 3 is already installed, run this command on terminal:
+        "python3 --version"
+     2. If not installed, download and install it from [Python's official website](https://www.python.org/).
 
+   - Windows:
+     1. Download the Python 3.9+ installer from [Python's official website](https://www.python.org/).
+     2. During installation, check the box "Add Python to PATH".
+     3. Verify the installation:
+        "python --version"
 
-3. Running the Simulations:
+3. Preparing the Environment:
+   - Update Pip (optional but recommended):
+     Run the following command to ensure pip is up-to-date:
+     "python3 -m pip install --upgrade pip"
+
+   - Install Dependencies:
+     Install the libraries listed in "requirements.txt":
+     "python3 -m pip install -r requirements.txt"
+
+4. Running the Simulations:
 Two simulations are provided:
    1. Without LTA: The car is manually controlled by the user via joystick or keyboard.
    2. With LTA: The car benefits from an active Lane Keeping Assistance system that automatically adjusts the steering to keep the vehicle within the lane.
